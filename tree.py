@@ -17,50 +17,58 @@ SEGMENTS = 48
 
 # # ---------------- L-Systems ------------------------------------------------------------
 
-# L-Systems were developed as a mathematical description of plant growth designed to model biological systems.
-# L-Systems can be thought as containing the instructions for how a single cell can grow into a complex organism.
-# They can be used to define the rules for interesting patterns, being particularly useful for fractal creation.
-# Example usage:
-# A	      - Axiom
-# A -> B  - Rule 1 Change A to B
-# B -> AB - Rule 2 Change B to AB
-# @see - http://interactivepython.org/courselib/static/thinkcspy/Strings/TurtlesandStringsandLSystems.html
+## L-Systems were developed as a mathematical description of plant growth designed to model biological systems.
+#  L-Systems can be thought as containing the instructions for how a single cell can grow into a complex organism.
+#  They can be used to define the rules for interesting patterns, being particularly useful for fractal creation.
+#  Example usage:
+#  A	      - Axiom
+#  A -> B  - Rule 1 Change A to B
+#  B -> AB - Rule 2 Change B to AB
+#  @see - http://interactivepython.org/courselib/static/thinkcspy/Strings/TurtlesandStringsandLSystems.html
 
-
-# F move forward a step of length d
-# f Move forward a step of length d without drawing a line
-# + Turn left by angle a
-# - Turn right by angle a
-# & Pitch down by angle a
-# ^ Pitch up by angle a
-# \ Roll left by angle a
-# / Roll right by angle a
-# | Turn arund (180 deg)
-#def draw(n, a, d, axiom, rule):
-def draw(n, sentence):
+## Return the resulting L-System based off of the given axioms and rules
+#  @param n - height of tree
+#  @param sentence - initial sentence - base for the rule applications
+#  @param rules - a dictionary containing an axiom:rule key:value pair, they're both expected to be strings
+def buildLSystem(n, sentence, rules):
 	next = ""
 	if (n > 0):
 		characters = list(sentence)
 
 		for c in characters:
-			if (c == 'X'):
-				next += draw(n-1, "F-[[X]+X]+F[+FX]-X");
-			elif (c == 'F'):
-				next += draw(n-1, "FF");
+			if (c in rules):
+				next += buildLSystem(n-1, rules[c], rules);
 			else:
 				next += c
 	else:
-		next = sentence
+		return sentence
 
 	return next
 
-# Generate the L-System string based off of the following parameters
+## F move forward a step of length d
+#  f Move forward a step of length d without drawing a line
+#  + Turn left by angle a
+#  - Turn right by angle a
+#  & Pitch down by angle a
+#  ^ Pitch up by angle a
+#  \ Roll left by angle a
+#  / Roll right by angle a
+#  | Turn arund (180 deg)
+#  @param lSentence - the L-System string returned by buildLSystem
+#  @param a - angle of rotation
+#  @param d - length d
+#def draw(lSentence, a, d):
+
+
+# Generate and draw the fractal resulting from the following parameters
+# @param n - recursion height
+# @param sentence -  initial sentence - base for the rule applications
 # @param a - angle
 # @param d - step distance
-# @param axiom
-# @param rule - rule descriptor
-# def lSystem(n, a, d, axiom, rule):
-
+# @param rules - a dictionary containing an axiom:rule key:value pair, they're both expected to be strings
+def lSystem(n, sentence, a, d, rules):
+	lSentence = buildLSystem(n, sentence, rules)
+	draw(lSentence, a, d)
 
 # # ------//-------- L-Systems ----------------------///------------------------------------
 
@@ -166,29 +174,34 @@ def genTree(numIter = 3, scaleFactor = .7, xRot = 15):
 	else:
 		return addBranches(numIter, scaleFactor, xRot)
 
-def treeWithBase():
+# -------//------- Recursive Definition -----------------------///-------------------------
+
+## Given a union of nodes, return the union of the tree with a base
+#  @param tree - a union of nodes that composes the tree
+def treeWithBase(tree):
 	base = cylinder(r = 6, h = .75)
 	base.add_param('$fn', 40)
-
+	
 	trunk1 = cylinder(r1 = 3.5, r2 = 0, h = 2)
 	trunk1.add_param('$fn', 5)
-
+	
 	trunk2 = cylinder(r1 = 2, r2 = 0, h = 4)
 	trunk2.add_param('$fn', 5)
-
+	
 	return union()(
-		base,
-		trunk1,
-		trunk2,
-		genTree(5),                  
-	)
+			base,
+			trunk1,
+			trunk2,
+			tree,
+		   )
 
-# -------//------- Recursive Definition -----------------------///-------------------------
 
 if __name__ == '__main__':
 	# n = 5, angle = 25.7
 	# Axiom - F
 	# Rule  - F[+F]F[-F]F
-	print(draw(3, 'X'))
-	#a = treeWithBase()
-	#scad_render_to_file(a, file_header='$fn = %s;' % SEGMENTS, include_orig_code=True)
+	rules = {'X':"F-[[X]+X]+F[+FX]-X", 'F': "FF"}
+	print(buildLSystem(3, 'X', rules))
+
+	recTree = treeWithBase(genTree(5))
+	scad_render_to_file(recTree, file_header='$fn = %s;' % SEGMENTS, include_orig_code=True)

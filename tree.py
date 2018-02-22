@@ -217,15 +217,12 @@ def zAxisRot(array, a):
 
 def test():
 	nodes = []
-	rot = xAxisRot([1, 0, 0], 90)
-	print (rot)
+	
 	nodes.append(
-				 left(3)
-				 (rotate(rot.tolist()))
-				 (cylinder(r = 2, h = 5)))
+				 translate([0, 0, 15])
+				 (rotate(a = [30, 0, 30])
+				 (cylinder(2, 5))))
 				 
-	n = translate([0, 0, 0]) (rotate(a = 90, v = RIGHT_VEC) (cylinder(r = 2, h = 5)))
-	nodes.append(n)
 	
 	return union()(nodes)
 

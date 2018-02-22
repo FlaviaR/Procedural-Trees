@@ -3,11 +3,9 @@
 #! /usr/bin/env python
 # -*- coding: UTF-8 -*-
 from __future__ import division
-import os
-import sys
 import re
-from numpy import array, random, cross
-
+import numpy as np
+import math as math
 
 # Assumes SolidPython is in site-packages or elsewhwere in sys.path
 from solid import *
@@ -45,6 +43,14 @@ def buildLSystem(n, sentence, rules):
 
 	return next
 
+def distance(vector, d):
+	if (vector == UP_VEC): return [0, 0, d]
+	elif (vector == RIGHT_VEC):  return [d, 0, 0]
+	elif (vector == FORWARD_VEC):  return [0, d, 0]
+	elif (vector == DOWN_VEC):  return [0, 0,-d]
+	elif (vector == LEFT_VEC):  return [-d, 0, 0]
+	elif (vector == BACK_VEC): return [0,-d, 0]
+
 ## F move forward a step of length d
 #  f Move forward a step of length d without drawing a line
 #  + Turn left by angle a
@@ -54,11 +60,32 @@ def buildLSystem(n, sentence, rules):
 #  \ Roll left by angle a
 #  / Roll right by angle a
 #  | Turn arund (180 deg)
+#  [ Push current drawing to stack
+#  ] Pop current drawing from stack
 #  @param lSentence - the L-System string returned by buildLSystem
-#  @param a - angle of rotation
+#  @param angle - angle of rotation
 #  @param d - length d
-#def draw(lSentence, a, d):
+def draw(lSentence, angle, d):
+	characters = list(lSentence)
+	nodes = []
+	stack = []
+	vector = UP_VEC
+	dist = 0
+	
+	#	for c in characters:
+	#	if (c == 'F'):
+		#elif (c == 'f'):
+		#elif (c == '+'):
+		#elif (c == '-'):
+		#else:
+		#	continue
+		#elif (c == '&'):
+		#elif (c == '^'):
+		#elif (c == '\'):
+		#elif (c == '/'):
+		#elif (c == '|'):
 
+	return union()(nodes)
 
 # Generate and draw the fractal resulting from the following parameters
 # @param n - recursion height
@@ -68,7 +95,7 @@ def buildLSystem(n, sentence, rules):
 # @param rules - a dictionary containing an axiom:rule key:value pair, they're both expected to be strings
 def lSystem(n, sentence, a, d, rules):
 	lSentence = buildLSystem(n, sentence, rules)
-	draw(lSentence, a, d)
+	return draw(lSentence, a, d)
 
 # # ------//-------- L-Systems ----------------------///------------------------------------
 
@@ -91,11 +118,11 @@ def rn(aa, bb):
 	'''A Normal random variable generator that takes a range, like
 	random.uniform, instead of mean and standard deviation.'''
     
-	return random.normal((bb+aa)/2., (bb-aa)/4.)
+	return np.random.normal((bb+aa)/2., (bb-aa)/4.)
 
-ru = random.uniform
+ru = np.random.uniform
 
-ri = random.randint
+ri = np.random.randint
 
 # Create a stem and leaf
 def stemAndLeaf():
@@ -176,6 +203,32 @@ def genTree(numIter = 3, scaleFactor = .7, xRot = 15):
 
 # -------//------- Recursive Definition -----------------------///-------------------------
 
+def xAxisRot(array, a):
+	x = [[1, 0, 0],[0, math.cos(a), -math.sin(a)],[0, math.sin(a), math.cos(a)]]
+	return np.dot(x, array)
+
+def yAxisRot(array, a):
+	y = [[math.cos(a), 0, -math.sin(a)],[0, 1, 0],[0, math.sin(a), math.cos(a)]]
+	return np.dot(y, array)
+
+def zAxisRot(array, a):
+	z = [[math.cos(a), math.sin(a), 0],[-math.sin(a), math.cos(a), 0],[0, 0, 1]]
+	return np.dot(z, array)
+
+def test():
+	nodes = []
+	rot = xAxisRot([1, 0, 0], 90)
+	print (rot)
+	nodes.append(
+				 left(3)
+				 (rotate(rot.tolist()))
+				 (cylinder(r = 2, h = 5)))
+				 
+	n = translate([0, 0, 0]) (rotate(a = 90, v = RIGHT_VEC) (cylinder(r = 2, h = 5)))
+	nodes.append(n)
+	
+	return union()(nodes)
+
 ## Given a union of nodes, return the union of the tree with a base
 #  @param tree - a union of nodes that composes the tree
 def treeWithBase(tree):
@@ -200,8 +253,11 @@ if __name__ == '__main__':
 	# n = 5, angle = 25.7
 	# Axiom - F
 	# Rule  - F[+F]F[-F]F
-	rules = {'X':"F-[[X]+X]+F[+FX]-X", 'F': "FF"}
-	print(buildLSystem(3, 'X', rules))
 
 	recTree = treeWithBase(genTree(5))
-	scad_render_to_file(recTree, file_header='$fn = %s;' % SEGMENTS, include_orig_code=True)
+	
+	#rules = {'X':"F-[[X]+X]+F[+FX]-X", 'F': "FF"}
+	rules = {'L':"LF+RFR+FL-F-LFLFL-FRFR+", 'R':"-LFLF+RFRFR+F+RF-LFL-FR"}
+	lTree = lSystem(3, '-L', 90, 2, rules)
+	
+	scad_render_to_file(test(), file_header='$fn = %s;' % SEGMENTS, include_orig_code=True)

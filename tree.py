@@ -3,15 +3,120 @@
 #! /usr/bin/env python
 # -*- coding: UTF-8 -*-
 from __future__ import division
-import re
+
+import sys
+sys.path.append('~/cg/python/OpenPolyhedra')
 import numpy as np
 import math as math
+import matrix
+import lSystemObj
 
 # Assumes SolidPython is in site-packages or elsewhwere in sys.path
 from solid import *
 from solid.utils import *
 
 SEGMENTS = 48
+
+def xAxisRot(array, a):
+	a = np.deg2rad(a)
+	c = cos(a)
+	s = sin(a)
+	x = [	[1, 0,  0, 0], \
+		 [0, c, -s, 0],   \
+		 [0, s,  c, 0],   \
+		 [0, 0,  0, 1]	]
+	return np.dot(array, x)
+
+def yAxisRot(array, a):
+	a = np.deg2rad(a)
+	c = cos(a)
+	s = sin(a)
+	y = [ [ c, 0, s, 0], \
+		 [ 0, 1, 0, 0],   \
+		 [-s, 0, c, 0],   \
+		 [ 0, 0, 0, 1]	]
+	return np.dot(array, y)
+
+def zAxisRot(array, a):
+	a = np.deg2rad(a)
+	c = cos(a)
+	s = sin(a)
+	z = [	[c, -s, 0, 0], \
+		 [s,  c, 0, 0],   \
+		 [0,  0, 1, 0],   \
+		 [0,  0, 0, 1]	]
+	return np.dot(array, z)
+
+def addNode(ang):
+	addNode.curAng = ang + addNode.curAng
+	addNode.nodes.append(
+		translate(addNode.curPoint.tolist()[:-1]) # remove fourth coordinate
+		(rotate(a = addNode.curAng,   v = [0,  -1,  0])      # y entering the screen
+		(cylinder(addNode.r, addNode.d))))
+
+	if True:
+		addNode.curVector = yAxisRot(addNode.curVector, ang )
+	else:
+		mat = matrix.rotate(addNode.curAng, 0,  1,  0)
+		mat = mat.tolist()
+		addNode.curVector = np.dot (addNode.curVector, mat)
+	# update current position
+	addNode.curPoint = np.add(addNode.curPoint, addNode.curVector)
+
+	#print("curPoint = %s" % addNode.curPoint)
+	#print("curVector = %s" % addNode.curVector)
+	#print("curAng = %f\n" % addNode.curAng)
+	
+addNode.r 	  = 2
+addNode.d 	  = 10
+addNode.nodes     = []
+addNode.curPoint  = np.array([0,  0,  0, 1])
+addNode.curVector = np.array([0,  0,  addNode.d, 0])
+addNode.curAng    = 0
+    
+def test(d):	
+	addNode(0)
+	addNode(30)
+	addNode(0)
+
+	addNode(30)
+	addNode(30)
+
+	addNode(-90)
+	addNode(-90)
+	addNode(90)
+	addNode(0)
+	addNode(90)
+
+	return union()(addNode.nodes)
+
+# # ---------------- Rules ------------ ---------------------------------------------------
+
+# Segmentation fault if n > 2in OpenSCAD
+def kochCurve():
+	a = 90	
+	s = "F-F-F-F"	
+	i = 2
+	r = {'F':"F+FF-FF-F-F+F+FF-F-F+F+FF+FF-F"}
+	return lSystemObj.LSysObj(a, s, i, r)
+
+# Will slightly traumatize OpenSCAD
+def kochCurve2():
+	a = 90	
+	s = "F-F-F-F"	
+	i = 4
+	r = {'F':"FF-F-F-F-F-F+F"}
+	return lSystemObj.LSysObj(a, s, i, r)
+
+# Ditto
+def kochCurve3():
+	a = 90	
+	s = "F-F-F-F"	
+	i = 4
+	r = {'F':"FF-F-F-F-FF"}
+	return lSystemObj.LSysObj(a, s, i, r)
+
+# # -------//------- Rules ------------ -----------------------///-------------------------
 
 # # ---------------- L-Systems ------------------------------------------------------------
 
@@ -43,14 +148,6 @@ def buildLSystem(n, sentence, rules):
 
 	return next
 
-def distance(vector, d):
-	if (vector == UP_VEC): return [0, 0, d]
-	elif (vector == RIGHT_VEC):  return [d, 0, 0]
-	elif (vector == FORWARD_VEC):  return [0, d, 0]
-	elif (vector == DOWN_VEC):  return [0, 0,-d]
-	elif (vector == LEFT_VEC):  return [-d, 0, 0]
-	elif (vector == BACK_VEC): return [0,-d, 0]
-
 ## F move forward a step of length d
 #  f Move forward a step of length d without drawing a line
 #  + Turn left by angle a
@@ -67,25 +164,27 @@ def distance(vector, d):
 #  @param d - length d
 def draw(lSentence, angle, d):
 	characters = list(lSentence)
-	nodes = []
 	stack = []
-	vector = UP_VEC
-	dist = 0
-	
-	#	for c in characters:
-	#	if (c == 'F'):
+	a = 0
+
+	for c in characters:
+		if (c == 'F'):
+			addNode(a)
+			a = 0
 		#elif (c == 'f'):
-		#elif (c == '+'):
-		#elif (c == '-'):
-		#else:
-		#	continue
+		elif (c == '+'):
+			a = angle
+		elif (c == '-'):
+			a = -angle
+		else:
+			continue
 		#elif (c == '&'):
 		#elif (c == '^'):
 		#elif (c == '\'):
 		#elif (c == '/'):
 		#elif (c == '|'):
 
-	return union()(nodes)
+	return union()(addNode.nodes)
 
 # Generate and draw the fractal resulting from the following parameters
 # @param n - recursion height
@@ -95,10 +194,10 @@ def draw(lSentence, angle, d):
 # @param rules - a dictionary containing an axiom:rule key:value pair, they're both expected to be strings
 def lSystem(n, sentence, a, d, rules):
 	lSentence = buildLSystem(n, sentence, rules)
+
 	return draw(lSentence, a, d)
 
 # # ------//-------- L-Systems ----------------------///------------------------------------
-
 
 # ---------------- Recursive Definition ----------------------------------------------------
 
@@ -203,28 +302,6 @@ def genTree(numIter = 3, scaleFactor = .7, xRot = 15):
 
 # -------//------- Recursive Definition -----------------------///-------------------------
 
-def xAxisRot(array, a):
-	x = [[1, 0, 0],[0, math.cos(a), -math.sin(a)],[0, math.sin(a), math.cos(a)]]
-	return np.dot(x, array)
-
-def yAxisRot(array, a):
-	y = [[math.cos(a), 0, -math.sin(a)],[0, 1, 0],[0, math.sin(a), math.cos(a)]]
-	return np.dot(y, array)
-
-def zAxisRot(array, a):
-	z = [[math.cos(a), math.sin(a), 0],[-math.sin(a), math.cos(a), 0],[0, 0, 1]]
-	return np.dot(z, array)
-
-def test():
-	nodes = []
-	
-	nodes.append(
-				 translate([0, 0, 15])
-				 (rotate(a = [30, 0, 30])
-				 (cylinder(2, 5))))
-				 
-	
-	return union()(nodes)
 
 ## Given a union of nodes, return the union of the tree with a base
 #  @param tree - a union of nodes that composes the tree
@@ -245,16 +322,12 @@ def treeWithBase(tree):
 			tree,
 		   )
 
-
 if __name__ == '__main__':
-	# n = 5, angle = 25.7
-	# Axiom - F
-	# Rule  - F[+F]F[-F]F
 
 	recTree = treeWithBase(genTree(5))
 	
-	#rules = {'X':"F-[[X]+X]+F[+FX]-X", 'F': "FF"}
-	rules = {'L':"LF+RFR+FL-F-LFLFL-FRFR+", 'R':"-LFLF+RFRFR+F+RF-LFL-FR"}
-	lTree = lSystem(3, '-L', 90, 2, rules)
-	
-	scad_render_to_file(test(), file_header='$fn = %s;' % SEGMENTS, include_orig_code=True)
+	lSysO = kochCurve3()
+	lTree = lSystem(lSysO.iterations, lSysO.sentence, lSysO.angle, 4, lSysO.rules)
+
+	scad_render_to_file(lTree, file_header='$fn = %s;' % SEGMENTS, include_orig_code=True)
+

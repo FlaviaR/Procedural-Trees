@@ -21,39 +21,39 @@ def xAxisRot(array, a):
 	a = np.deg2rad(a)
 	c = cos(a)
 	s = sin(a)
-	x = [	[1, 0,  0, 0], \
-		 [0, c, -s, 0],   \
-		 [0, s,  c, 0],   \
-		 [0, 0,  0, 1]	]
+	x = [[1, 0,  0, 0], \
+		  [0, c, -s, 0], \
+		  [0, s,  c, 0], \
+		  [0, 0,  0, 1]]
 	return np.dot(array, x)
 
 def yAxisRot(array, a):
 	a = np.deg2rad(a)
 	c = cos(a)
 	s = sin(a)
-	y = [ [ c, 0, s, 0], \
-		 [ 0, 1, 0, 0],   \
-		 [-s, 0, c, 0],   \
-		 [ 0, 0, 0, 1]	]
+	y = [[ c, 0, s, 0], \
+		  [ 0, 1, 0, 0], \
+		  [-s, 0, c, 0], \
+		  [ 0, 0, 0, 1]]
 	return np.dot(array, y)
 
 def zAxisRot(array, a):
 	a = np.deg2rad(a)
 	c = cos(a)
 	s = sin(a)
-	z = [	[c, -s, 0, 0], \
-		 [s,  c, 0, 0],   \
-		 [0,  0, 1, 0],   \
-		 [0,  0, 0, 1]	]
+	z = [[c, -s, 0, 0], \
+		  [s,  c, 0, 0], \
+		  [0,  0, 1, 0], \
+		  [0,  0, 0, 1]]
 	return np.dot(array, z)
 
 def addNode(ang):
 	addNode.curAng = ang + addNode.curAng
 	addNode.nodes.append(
-		translate(addNode.curPoint.tolist()[:-1]) # remove fourth coordinate
-		(rotate(a = addNode.curAng,   v = [0,  -1,  0])      # y entering the screen
-		(cylinder(addNode.r, addNode.d))))
-
+                    translate(addNode.curPoint.tolist()[:-1]) # remove fourth coordinate
+                    (rotate(a = addNode.curAng,   v = [0,  -1,  0])      # y entering the screen
+						  #(sphere(addNode.r))
+                    (cylinder(addNode.r, addNode.d))))
 	if True:
 		addNode.curVector = yAxisRot(addNode.curVector, ang )
 	else:
@@ -93,7 +93,7 @@ def test(d):
 # # ---------------- Rules ------------ ---------------------------------------------------
 
 # Segmentation fault if n > 2in OpenSCAD
-def kochCurve():
+def kochCurve1():
 	a = 90	
 	s = "F-F-F-F"	
 	i = 2
@@ -114,6 +114,27 @@ def kochCurve3():
 	s = "F-F-F-F"	
 	i = 4
 	r = {'F':"FF-F-F-F-FF"}
+	return lSystemObj.LSysObj(a, s, i, r)
+
+def TwoDTree1():
+	a = 25.7	
+	s = "F"	
+	i = 5
+	r = {'F':"F[+F]F[-F]F"}
+	return lSystemObj.LSysObj(a, s, i, r)	
+
+def TwoDTree2():
+	a = 20	
+	s = "F"	
+	i = 5
+	r = {'F':"F[+F]F[-F][F]"}
+	return lSystemObj.LSysObj(a, s, i, r)
+
+def TwoDTree3():
+	a = 25.7	
+	s = "F"	
+	i = 4
+	r = {'F':"FF-[-F+F+F]+[+F-F-F]"}
 	return lSystemObj.LSysObj(a, s, i, r)
 
 # # -------//------- Rules ------------ -----------------------///-------------------------
@@ -176,13 +197,21 @@ def draw(lSentence, angle, d):
 			a = angle
 		elif (c == '-'):
 			a = -angle
-		else:
-			continue
 		#elif (c == '&'):
 		#elif (c == '^'):
 		#elif (c == '\'):
 		#elif (c == '/'):
 		#elif (c == '|'):
+		elif (c == '['):
+			tup = (addNode.curPoint, addNode.curVector, addNode.curAng) 
+			stack.append(tup)
+		elif (c == ']'):
+			val = stack.pop()
+			addNode.curPoint = val[0]
+			addNode.curVector = val[1]
+			addNode.curAng = val[2]
+		else:
+			continue
 
 	return union()(addNode.nodes)
 
@@ -324,9 +353,9 @@ def treeWithBase(tree):
 
 if __name__ == '__main__':
 
-	recTree = treeWithBase(genTree(5))
+	#recTree = treeWithBase(genTree(5))
 	
-	lSysO = kochCurve3()
+	lSysO = TwoDTree3()
 	lTree = lSystem(lSysO.iterations, lSysO.sentence, lSysO.angle, 4, lSysO.rules)
 
 	scad_render_to_file(lTree, file_header='$fn = %s;' % SEGMENTS, include_orig_code=True)

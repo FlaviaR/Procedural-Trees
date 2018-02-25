@@ -1,7 +1,14 @@
-# Tree generation test - randomized procedural generation
-
 #! /usr/bin/env python
 # -*- coding: UTF-8 -*-
+#
+## @package tree
+#
+# Tree generation test - randomized procedural generation
+#
+# @author Flavia Cavalcanti
+# @since 22/02/2018
+#
+
 from __future__ import division
 
 import sys
@@ -17,6 +24,11 @@ from solid.utils import *
 
 SEGMENTS = 48
 
+## Rotate the given vector about the x axis.
+#
+#  @param array given vector.
+#  @param a rotation angle in degrees.
+#
 def xAxisRot(array, a):
 	a = np.deg2rad(a)
 	c = cos(a)
@@ -27,6 +39,11 @@ def xAxisRot(array, a):
 		  [0, 0,  0, 1]]
 	return np.dot(array, x)
 
+## Rotate the given vector about the y axis.
+#
+#  @param array given vector.
+#  @param a rotation angle in degrees.
+#
 def yAxisRot(array, a):
 	a = np.deg2rad(a)
 	c = cos(a)
@@ -37,6 +54,11 @@ def yAxisRot(array, a):
 		  [ 0, 0, 0, 1]]
 	return np.dot(array, y)
 
+## Rotate the given vector about the z axis.
+#
+#  @param array given vector.
+#  @param a rotation angle in degrees.
+#
 def zAxisRot(array, a):
 	a = np.deg2rad(a)
 	c = cos(a)
@@ -47,6 +69,10 @@ def zAxisRot(array, a):
 		  [0,  0, 0, 1]]
 	return np.dot(array, z)
 
+## Add a new object (cylinder plus sphere) to the model and update the current position.
+#
+#  @param ang deviation from the previous direction.
+#
 def addNode(ang):
 	addNode.curAng = ang + addNode.curAng
 	addNode.nodes.append(
@@ -67,13 +93,31 @@ def addNode(ang):
 	#print("curVector = %s" % addNode.curVector)
 	#print("curAng = %f\n" % addNode.curAng)
 	
+## @var addNode.r
+## Cylinder radius.
 addNode.r 	  = 2
+
+## @var addNode.d
+## Cylinder height.
 addNode.d 	  = 10
+
+## @var addNode.nodes
+## openscad primitives.
 addNode.nodes     = []
+
+## @var addNode.curPoint
+## Current position.
 addNode.curPoint  = np.array([0,  0,  0, 1])
+
+## @var addNode.curVector
+## Current direction.
 addNode.curVector = np.array([0,  0,  addNode.d, 0])
+
+## @var addNode.curAng
+## Current angle.
 addNode.curAng    = 0
-    
+   
+## Silly test that draws a bunch of cylinders. 
 def test(d):	
 	addNode(0)
 	addNode(30)
@@ -92,7 +136,7 @@ def test(d):
 
 # # ---------------- Rules ------------ ---------------------------------------------------
 
-# Segmentation fault if n > 2in OpenSCAD
+## Segmentation fault if n > 2 in OpenSCAD
 def kochCurve1():
 	a = 90	
 	s = "F-F-F-F"	
@@ -100,7 +144,7 @@ def kochCurve1():
 	r = {'F':"F+FF-FF-F-F+F+FF-F-F+F+FF+FF-F"}
 	return lSystemObj.LSysObj(a, s, i, r)
 
-# Will slightly traumatize OpenSCAD
+## Will slightly traumatize OpenSCAD
 def kochCurve2():
 	a = 90	
 	s = "F-F-F-F"	
@@ -108,7 +152,7 @@ def kochCurve2():
 	r = {'F':"FF-F-F-F-F-F+F"}
 	return lSystemObj.LSysObj(a, s, i, r)
 
-# Ditto
+# #Ditto
 def kochCurve3():
 	a = 90	
 	s = "F-F-F-F"	
@@ -144,16 +188,16 @@ def TwoDTree3():
 ## L-Systems were developed as a mathematical description of plant growth designed to model biological systems.
 #  L-Systems can be thought as containing the instructions for how a single cell can grow into a complex organism.
 #  They can be used to define the rules for interesting patterns, being particularly useful for fractal creation.
+#
 #  Example usage:
-#  A	      - Axiom
-#  A -> B  - Rule 1 Change A to B
-#  B -> AB - Rule 2 Change B to AB
+#  - A       - Axiom
+#  - A -> B  - Rule 1 Change A to B
+#  - B -> AB - Rule 2 Change B to AB
 #  @see - http://interactivepython.org/courselib/static/thinkcspy/Strings/TurtlesandStringsandLSystems.html
-
-## Return the resulting L-System based off of the given axioms and rules
 #  @param n - height of tree
 #  @param sentence - initial sentence - base for the rule applications
 #  @param rules - a dictionary containing an axiom:rule key:value pair, they're both expected to be strings
+#  @return the resulting L-System based off of the given axioms and rules
 def buildLSystem(n, sentence, rules):
 	next = ""
 	if (n > 0):
@@ -169,17 +213,19 @@ def buildLSystem(n, sentence, rules):
 
 	return next
 
-## F move forward a step of length d
-#  f Move forward a step of length d without drawing a line
-#  + Turn left by angle a
-#  - Turn right by angle a
-#  & Pitch down by angle a
-#  ^ Pitch up by angle a
-#  \ Roll left by angle a
-#  / Roll right by angle a
-#  | Turn arund (180 deg)
-#  [ Push current drawing to stack
-#  ] Pop current drawing from stack
+## Interpret a given sentence and draw the result.
+# 
+#  - F move forward a step of length d
+#  - f Move forward a step of length d without drawing a line
+#  - + Turn left by angle a
+#  - - Turn right by angle a
+#  - & Pitch down by angle a
+#  - ^ Pitch up by angle a
+#  - \ Roll left by angle a
+#  - / Roll right by angle a
+#  - | Turn arund (180 deg)
+#  - [ Push current drawing to stack
+#  - ] Pop current drawing from stack
 #  @param lSentence - the L-System string returned by buildLSystem
 #  @param angle - angle of rotation
 #  @param d - length d
@@ -215,12 +261,13 @@ def draw(lSentence, angle, d):
 
 	return union()(addNode.nodes)
 
-# Generate and draw the fractal resulting from the following parameters
-# @param n - recursion height
-# @param sentence -  initial sentence - base for the rule applications
-# @param a - angle
-# @param d - step distance
-# @param rules - a dictionary containing an axiom:rule key:value pair, they're both expected to be strings
+
+## Generate and draw the fractal resulting from the following parameters
+#  @param n - recursion height
+#  @param sentence -  initial sentence - base for the rule applications
+#  @param a - angle
+#  @param d - step distance
+#  @param rules - a dictionary containing an axiom:rule key:value pair, they're both expected to be strings
 def lSystem(n, sentence, a, d, rules):
 	lSentence = buildLSystem(n, sentence, rules)
 
@@ -230,17 +277,19 @@ def lSystem(n, sentence, a, d, rules):
 
 # ---------------- Recursive Definition ----------------------------------------------------
 
-# The tree is represented completely by cylinders
-#           add Stem and Leaf,														if n <= 0
-#		  /
+## The tree is represented completely by cylinders
+# <pre>
+#           add Stem and Leaf,                                                      if n <= 0
+#         /
 # Tree (n)
-#         \ translate([0, 0, (position of branch in relation to its parent)])		if n > 0
-#			(scale(scaleFactor)(rotate(a = [xRot, 0, (angle of rot - around parent's circumference)])
-#			(genTree(numIter - 1, scaleFactor, xRot))))
+#         \ translate([0, 0, (position of branch in relation to its parent)])       if n > 0
+#           (scale(scaleFactor)(rotate(a = [xRot, 0, (angle of rot - around parent's circumference)])
+#           (genTree(numIter - 1, scaleFactor, xRot))))
 #
-#			~xRot and scaleFactor are randomely selected values~
+#           ~xRot and scaleFactor are randomely selected values~
 #
-# Expanded from https://github.com/yosinski/OpenSCAD-playground/blob/master/tree.py
+# </pre>
+# @see https://github.com/yosinski/OpenSCAD-playground/blob/master/tree.py
 
 def rn(aa, bb):
 	'''A Normal random variable generator that takes a range, like
@@ -252,7 +301,7 @@ ru = np.random.uniform
 
 ri = np.random.randint
 
-# Create a stem and leaf
+## Create a stem and leaf
 def stemAndLeaf():
 		# Radius and height of the stem
 		stemR = rn(.9, 1.1) 
@@ -280,9 +329,11 @@ def stemAndLeaf():
 			translate([0, 0, stemH - (leafH)/2.])(cylLeaf),
 		)
 
-# Recursive method to generate more branches in the tree
-# @param scaleFactor - branch scale factor 
-# @param xRot - x-axis angle of rotation
+
+## Recursive method to generate more branches in the tree
+#  @param numIter - number of iterations
+#  @param scaleFactor - branch scale factor 
+#  @param xRot - x-axis angle of rotation
 def addBranches(numIter = 3, scaleFactor = 0.7, xRot = 15):
 		# Calculate the number of new branches to be atteched to the last generated branch
 		numBranches = ri(3, 5)

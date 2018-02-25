@@ -160,6 +160,13 @@ def kochCurve3():
 	r = {'F':"FF-F-F-F-FF"}
 	return lSystemObj.LSysObj(a, s, i, r)
 
+def dragonCurve():
+	a = 90	
+	s = "FX"	
+	i = 10
+	r = {'X':"X+YF+", 'Y':"-FX-Y"}
+	return lSystemObj.LSysObj(a, s, i, r)
+
 def TwoDTree1():
 	a = 25.7	
 	s = "F"	
@@ -181,6 +188,26 @@ def TwoDTree3():
 	r = {'F':"FF-[-F+F+F]+[+F-F-F]"}
 	return lSystemObj.LSysObj(a, s, i, r)
 
+def fractalPlant1():
+	a = 20
+	s = "X"	
+	i = 7
+	r = {'X':"F[+X]F[-X]+X", 'F':"FF"}
+	return lSystemObj.LSysObj(a, s, i, r)
+
+def fractalPlant2():
+	a = 25.7
+	s = "X"	
+	i = 7
+	r = {'X':"F[+X][-X]FX", 'F':"FF"}
+	return lSystemObj.LSysObj(a, s, i, r)
+
+def fractalPlant3():
+	a = 22.5
+	s = "X"	
+	i = 5
+	r = {'X':"F-[[X]+X]+F[+FX]-X", 'F':"FF"}
+	return lSystemObj.LSysObj(a, s, i, r)
 # # -------//------- Rules ------------ -----------------------///-------------------------
 
 # # ---------------- L-Systems ------------------------------------------------------------
@@ -240,9 +267,9 @@ def draw(lSentence, angle, d):
 			a = 0
 		#elif (c == 'f'):
 		elif (c == '+'):
-			a = angle
-		elif (c == '-'):
 			a = -angle
+		elif (c == '-'):
+			a = angle
 		#elif (c == '&'):
 		#elif (c == '^'):
 		#elif (c == '\'):
@@ -270,7 +297,7 @@ def draw(lSentence, angle, d):
 #  @param rules - a dictionary containing an axiom:rule key:value pair, they're both expected to be strings
 def lSystem(n, sentence, a, d, rules):
 	lSentence = buildLSystem(n, sentence, rules)
-
+	print lSentence
 	return draw(lSentence, a, d)
 
 # # ------//-------- L-Systems ----------------------///------------------------------------
@@ -406,7 +433,7 @@ if __name__ == '__main__':
 
 	#recTree = treeWithBase(genTree(5))
 	
-	lSysO = TwoDTree3()
+	lSysO = fractalPlant3()
 	lTree = lSystem(lSysO.iterations, lSysO.sentence, lSysO.angle, 4, lSysO.rules)
 
 	scad_render_to_file(lTree, file_header='$fn = %s;' % SEGMENTS, include_orig_code=True)

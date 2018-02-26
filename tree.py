@@ -24,116 +24,6 @@ from solid.utils import *
 
 SEGMENTS = 48
 
-## Rotate the given vector about the x axis.
-#
-#  @param array given vector.
-#  @param a rotation angle in degrees.
-#
-def xAxisRot(array, a):
-	a = np.deg2rad(a)
-	c = cos(a)
-	s = sin(a)
-	x = [[1, 0,  0, 0], \
-		  [0, c, -s, 0], \
-		  [0, s,  c, 0], \
-		  [0, 0,  0, 1]]
-	return np.dot(array, x)
-
-## Rotate the given vector about the y axis.
-#
-#  @param array given vector.
-#  @param a rotation angle in degrees.
-#
-def yAxisRot(array, a):
-	a = np.deg2rad(a)
-	c = cos(a)
-	s = sin(a)
-	y = [[ c, 0, s, 0], \
-		  [ 0, 1, 0, 0], \
-		  [-s, 0, c, 0], \
-		  [ 0, 0, 0, 1]]
-	return np.dot(array, y)
-
-## Rotate the given vector about the z axis.
-#
-#  @param array given vector.
-#  @param a rotation angle in degrees.
-#
-def zAxisRot(array, a):
-	a = np.deg2rad(a)
-	c = cos(a)
-	s = sin(a)
-	z = [[c, -s, 0, 0], \
-		  [s,  c, 0, 0], \
-		  [0,  0, 1, 0], \
-		  [0,  0, 0, 1]]
-	return np.dot(array, z)
-
-## Add a new object (cylinder plus sphere) to the model and update the current position.
-#
-#  @param ang deviation from the previous direction.
-#
-def addNode(ang):
-	addNode.curAng = ang + addNode.curAng
-	addNode.nodes.append(
-                    translate(addNode.curPoint.tolist()[:-1]) # remove fourth coordinate
-                    (rotate(a = addNode.curAng,   v = [0,  -1,  0])      # y entering the screen
-						  #(sphere(addNode.r))
-                    (cylinder(addNode.r, addNode.d))))
-	if True:
-		addNode.curVector = yAxisRot(addNode.curVector, ang )
-	else:
-		mat = matrix.rotate(addNode.curAng, 0,  1,  0)
-		mat = mat.tolist()
-		addNode.curVector = np.dot (addNode.curVector, mat)
-	# update current position
-	addNode.curPoint = np.add(addNode.curPoint, addNode.curVector)
-
-	#print("curPoint = %s" % addNode.curPoint)
-	#print("curVector = %s" % addNode.curVector)
-	#print("curAng = %f\n" % addNode.curAng)
-	
-## @var addNode.r
-## Cylinder radius.
-addNode.r 	  = 2
-
-## @var addNode.d
-## Cylinder height.
-addNode.d 	  = 10
-
-## @var addNode.nodes
-## openscad primitives.
-addNode.nodes     = []
-
-## @var addNode.curPoint
-## Current position.
-addNode.curPoint  = np.array([0,  0,  0, 1])
-
-## @var addNode.curVector
-## Current direction.
-addNode.curVector = np.array([0,  0,  addNode.d, 0])
-
-## @var addNode.curAng
-## Current angle.
-addNode.curAng    = 0
-   
-## Silly test that draws a bunch of cylinders. 
-def test(d):	
-	addNode(0)
-	addNode(30)
-	addNode(0)
-
-	addNode(30)
-	addNode(30)
-
-	addNode(-90)
-	addNode(-90)
-	addNode(90)
-	addNode(0)
-	addNode(90)
-
-	return union()(addNode.nodes)
-
 # # ---------------- Rules ------------ ---------------------------------------------------
 
 ## Segmentation fault if n > 2 in OpenSCAD
@@ -160,11 +50,14 @@ def kochCurve3():
 	r = {'F':"FF-F-F-F-FF"}
 	return lSystemObj.LSysObj(a, s, i, r)
 
-def dragonCurve():
+def hilbert3D():
 	a = 90	
-	s = "FX"	
-	i = 10
-	r = {'X':"X+YF+", 'Y':"-FX-Y"}
+	s = "A"	
+	i = 2
+	r = {'A':"B-F+CFC+F-D&F∧D-F+&&CFC+F+B//",\
+		  'B':"A&F∧CFB∧F∧D∧∧-F-D∧|F∧B|FC∧F∧A//",\
+		  'C':"|D∧|F∧B-F+C∧F∧A&&FA&F∧C+F+B∧F∧D//",\
+		  'D':"|CFB-F+B|FA&F∧A&&FB-F+B|FC//"}
 	return lSystemObj.LSysObj(a, s, i, r)
 
 def TwoDTree1():
@@ -240,6 +133,121 @@ def buildLSystem(n, sentence, rules):
 
 	return next
 
+
+## Rotate the given vector about the x axis.
+#
+#  @param array given vector.
+#  @param a rotation angle in degrees.
+#
+def xAxisRot(array, a):
+	a = np.deg2rad(a)
+	c = cos(a)
+	s = sin(a)
+	x = [[1, 0,  0, 0], \
+		  [0, c, -s, 0], \
+		  [0, s,  c, 0], \
+		  [0, 0,  0, 1]]
+	return np.dot(array, x)
+
+## Rotate the given vector about the y axis.
+#
+#  @param array given vector.
+#  @param a rotation angle in degrees.
+#
+def yAxisRot(array, a):
+	a = np.deg2rad(a)
+	c = cos(a)
+	s = sin(a)
+	y = [[ c, 0, s, 0], \
+		  [ 0, 1, 0, 0], \
+		  [-s, 0, c, 0], \
+		  [ 0, 0, 0, 1]]
+	return np.dot(array, y)
+
+## Rotate the given vector about the z axis.
+#
+#  @param array given vector.
+#  @param a rotation angle in degrees.
+#
+def zAxisRot(array, a):
+	a = np.deg2rad(a)
+	c = cos(a)
+	s = sin(a)
+	z = [[c, -s, 0, 0], \
+		  [s,  c, 0, 0], \
+		  [0,  0, 1, 0], \
+		  [0,  0, 0, 1]]
+	return np.dot(array, z)
+
+## Add a new object (cylinder plus sphere) to the model and update the current position.
+#
+#  @param ang deviation from the previous direction.
+#
+def addNode(ang, axis):
+	addNode.curAng += ang
+	addNode.nodes.append(
+                    translate(addNode.curPoint.tolist()[:-1]) # remove fourth coordinate
+                    (rotate(a = addNode.curAng,   v = axis)      
+						  #(sphere(addNode.r))
+                    (cylinder(addNode.r, addNode.d))))
+	if False:
+		addNode.curVector = yAxisRot(addNode.curVector, ang )
+	else:
+		x = -axis[0]
+		y = -axis[1]
+		z = -axis[2]
+
+		mat = matrix.rotate(ang, x, y, z)
+		mat = mat.tolist()
+		addNode.curVector = np.dot (addNode.curVector, mat)
+	# update current position
+	addNode.curPoint = np.add(addNode.curPoint, addNode.curVector)
+
+	#print("curPoint = %s" % addNode.curPoint)
+	#print("curVector = %s" % addNode.curVector)
+	#print("curAng = %f\n" % addNode.curAng)
+	
+## @var addNode.r
+## Cylinder radius.
+addNode.r 	  = 2
+
+## @var addNode.d
+## Cylinder height.
+addNode.d 	  = 10
+
+## @var addNode.nodes
+## openscad primitives.
+addNode.nodes     = []
+
+## @var addNode.curPoint
+## Current position.
+addNode.curPoint  = np.array([0,  0,  0, 1])
+
+## @var addNode.curVector
+## Current direction.
+addNode.curVector = np.array([0,  0,  addNode.d, 0])
+
+## @var addNode.curAng
+## Current angle.
+addNode.curAng    = 0
+   
+## Silly test that draws a bunch of cylinders. 
+def test(d):	
+	addNode(0)
+	addNode(30)
+	addNode(0)
+
+	addNode(30)
+	addNode(30)
+
+	addNode(-90)
+	addNode(-90)
+	addNode(90)
+	addNode(0)
+	addNode(90)
+
+	return union()(addNode.nodes)
+
 ## Interpret a given sentence and draw the result.
 # 
 #  - F move forward a step of length d
@@ -260,21 +268,34 @@ def draw(lSentence, angle, d):
 	characters = list(lSentence)
 	stack = []
 	a = 0
+	axis = [0, 1, 0]
 
 	for c in characters:
 		if (c == 'F'):
-			addNode(a)
+			addNode(a, axis)
 			a = 0
 		#elif (c == 'f'):
 		elif (c == '+'):
-			a = -angle
-		elif (c == '-'):
 			a = angle
-		#elif (c == '&'):
-		#elif (c == '^'):
-		#elif (c == '\'):
-		#elif (c == '/'):
-		#elif (c == '|'):
+			axis = [0, 1, 0]
+		elif (c == '-'):
+			a = -angle
+			axis = [0, 1, 0]
+		elif (c == '&'):
+			a = angle
+			axis = [0, 1, 0]
+		elif (c == '^'):
+			a = -angle
+			axis = [0, 1, 0]
+		elif (c == "\\"):
+			a = angle
+			axis = [0, 1, 0]
+		elif (c == '/'):
+			a = -angle
+			axis = [0, 1, 0]
+		elif (c == '|'):
+			a = 180
+			axis = [0, 1, 0]
 		elif (c == '['):
 			tup = (addNode.curPoint, addNode.curVector, addNode.curAng) 
 			stack.append(tup)

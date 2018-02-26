@@ -183,21 +183,17 @@ def zAxisRot(array, a):
 #
 #  @param ang deviation from the previous direction.
 #
-def addNode(ang, axis):
+def addNode(ang):
 	addNode.curAng += ang
 	addNode.nodes.append(
                     translate(addNode.curPoint.tolist()[:-1]) # remove fourth coordinate
-                    (rotate(a = addNode.curAng,   v = axis)      
+                    (rotate(a = addNode.curAng,   v = addNode.axis)      
 						  #(sphere(addNode.r))
                     (cylinder(addNode.r, addNode.d))))
 	if False:
 		addNode.curVector = yAxisRot(addNode.curVector, ang )
 	else:
-		x = -axis[0]
-		y = -axis[1]
-		z = -axis[2]
-
-		mat = matrix.rotate(ang, x, y, z)
+		mat = matrix.rotate(ang, -addNode.axis[0],  -addNode.axis[1],  -addNode.axis[2])
 		mat = mat.tolist()
 		addNode.curVector = np.dot (addNode.curVector, mat)
 	# update current position
@@ -206,7 +202,11 @@ def addNode(ang, axis):
 	#print("curPoint = %s" % addNode.curPoint)
 	#print("curVector = %s" % addNode.curVector)
 	#print("curAng = %f\n" % addNode.curAng)
-	
+
+## @var addNode.axis
+## Rotation axis.
+addNode.axis  = [-1,  0,  0]
+
 ## @var addNode.r
 ## Cylinder radius.
 addNode.r 	  = 2
@@ -268,34 +268,33 @@ def draw(lSentence, angle, d):
 	characters = list(lSentence)
 	stack = []
 	a = 0
-	axis = [0, 1, 0]
 
 	for c in characters:
 		if (c == 'F'):
-			addNode(a, axis)
+			addNode(a)
 			a = 0
 		#elif (c == 'f'):
 		elif (c == '+'):
 			a = angle
-			axis = [0, 1, 0]
+			addNode.axis  = [-1,  0,  0]
 		elif (c == '-'):
 			a = -angle
-			axis = [0, 1, 0]
+			addNode.axis  = [-1,  0,  0]
 		elif (c == '&'):
 			a = angle
-			axis = [0, 1, 0]
+			addNode.axis  = [-1,  0,  0]
 		elif (c == '^'):
 			a = -angle
-			axis = [0, 1, 0]
+			addNode.axis  = [-1,  0,  0]
 		elif (c == "\\"):
 			a = angle
-			axis = [0, 1, 0]
+			addNode.axis  = [-1,  0,  0]
 		elif (c == '/'):
 			a = -angle
-			axis = [0, 1, 0]
+			addNode.axis  = [-1,  0,  0]
 		elif (c == '|'):
 			a = 180
-			axis = [0, 1, 0]
+			addNode.axis  = [-1,  0,  0]
 		elif (c == '['):
 			tup = (addNode.curPoint, addNode.curVector, addNode.curAng) 
 			stack.append(tup)

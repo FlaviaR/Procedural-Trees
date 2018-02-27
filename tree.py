@@ -28,76 +28,76 @@ SEGMENTS = 48
 
 ## Segmentation fault if n > 2 in OpenSCAD
 def kochCurve1():
-	a = 90	
-	s = "F-F-F-F"	
+	a = 90
+	s = "F-F-F-F"
 	i = 2
 	r = {'F':"F+FF-FF-F-F+F+FF-F-F+F+FF+FF-F"}
 	return lSystemObj.LSysObj(a, s, i, r)
 
 ## Will slightly traumatize OpenSCAD
 def kochCurve2():
-	a = 90	
-	s = "F-F-F-F"	
+	a = 90
+	s = "F-F-F-F"
 	i = 4
 	r = {'F':"FF-F-F-F-F-F+F"}
 	return lSystemObj.LSysObj(a, s, i, r)
 
 # #Ditto
 def kochCurve3():
-	a = 90	
-	s = "F-F-F-F"	
+	a = 90
+	s = "F-F-F-F"
 	i = 4
 	r = {'F':"FF-F-F-F-FF"}
 	return lSystemObj.LSysObj(a, s, i, r)
 
 def hilbert3D():
-	a = 90	
-	s = "A"	
+	a = 90
+	s = "A"
 	i = 2
 	r = {'A':"B-F+CFC+F-D&F∧D-F+&&CFC+F+B//",\
-		  'B':"A&F∧CFB∧F∧D∧∧-F-D∧|F∧B|FC∧F∧A//",\
-		  'C':"|D∧|F∧B-F+C∧F∧A&&FA&F∧C+F+B∧F∧D//",\
+		'B':"A&F∧CFB∧F∧D∧∧-F-D∧|F∧B|FC∧F∧A//",\
+			'C':"|D∧|F∧B-F+C∧F∧A&&FA&F∧C+F+B∧F∧D//",\
 		  'D':"|CFB-F+B|FA&F∧A&&FB-F+B|FC//"}
 	return lSystemObj.LSysObj(a, s, i, r)
 
 def TwoDTree1():
-	a = 25.7	
-	s = "F"	
+	a = 25.7
+	s = "F"
 	i = 5
 	r = {'F':"F[+F]F[-F]F"}
-	return lSystemObj.LSysObj(a, s, i, r)	
+	return lSystemObj.LSysObj(a, s, i, r)
 
 def TwoDTree2():
-	a = 20	
-	s = "F"	
+	a = 20
+	s = "F"
 	i = 5
 	r = {'F':"F[+F]F[-F][F]"}
 	return lSystemObj.LSysObj(a, s, i, r)
 
 def TwoDTree3():
-	a = 25.7	
-	s = "F"	
+	a = 25.7
+	s = "F"
 	i = 4
 	r = {'F':"FF-[-F+F+F]+[+F-F-F]"}
 	return lSystemObj.LSysObj(a, s, i, r)
 
 def fractalPlant1():
 	a = 20
-	s = "X"	
+	s = "X"
 	i = 7
 	r = {'X':"F[+X]F[-X]+X", 'F':"FF"}
 	return lSystemObj.LSysObj(a, s, i, r)
 
 def fractalPlant2():
 	a = 25.7
-	s = "X"	
+	s = "X"
 	i = 7
 	r = {'X':"F[+X][-X]FX", 'F':"FF"}
 	return lSystemObj.LSysObj(a, s, i, r)
 
 def fractalPlant3():
 	a = 22.5
-	s = "X"	
+	s = "X"
 	i = 5
 	r = {'X':"F-[[X]+X]+F[+FX]-X", 'F':"FF"}
 	return lSystemObj.LSysObj(a, s, i, r)
@@ -122,15 +122,15 @@ def buildLSystem(n, sentence, rules):
 	next = ""
 	if (n > 0):
 		characters = list(sentence)
-
+		
 		for c in characters:
 			if (c in rules):
 				next += buildLSystem(n-1, rules[c], rules);
 			else:
 				next += c
-	else:
-		return sentence
-
+else:
+	return sentence
+	
 	return next
 
 
@@ -144,9 +144,9 @@ def xAxisRot(array, a):
 	c = cos(a)
 	s = sin(a)
 	x = [[1, 0,  0, 0], \
-		  [0, c, -s, 0], \
-		  [0, s,  c, 0], \
-		  [0, 0,  0, 1]]
+		 [0, c, -s, 0], \
+		 [0, s,  c, 0], \
+		 [0, 0,  0, 1]]
 	return np.dot(array, x)
 
 ## Rotate the given vector about the y axis.
@@ -159,9 +159,9 @@ def yAxisRot(array, a):
 	c = cos(a)
 	s = sin(a)
 	y = [[ c, 0, s, 0], \
-		  [ 0, 1, 0, 0], \
-		  [-s, 0, c, 0], \
-		  [ 0, 0, 0, 1]]
+		 [ 0, 1, 0, 0], \
+		 [-s, 0, c, 0], \
+		 [ 0, 0, 0, 1]]
 	return np.dot(array, y)
 
 ## Rotate the given vector about the z axis.
@@ -174,9 +174,9 @@ def zAxisRot(array, a):
 	c = cos(a)
 	s = sin(a)
 	z = [[c, -s, 0, 0], \
-		  [s,  c, 0, 0], \
-		  [0,  0, 1, 0], \
-		  [0,  0, 0, 1]]
+		 [s,  c, 0, 0], \
+		 [0,  0, 1, 0], \
+		 [0,  0, 0, 1]]
 	return np.dot(array, z)
 
 
@@ -239,43 +239,43 @@ class turtle(object):
 				self.curVector = np.array([0, 0, self.h, 0])
 		else:
 			self.Z = True
-
+			
 			if (self.axis != [0, 0, -1]):
 				self.curAng = 0
 				self.axis = [0,  0,  -1]
 				self.rotFunc = zAxisRot
 				self.curVector = np.array([0, self.h, 0, 0])
-	#exit("Invalid rotation axis")
+#exit("Invalid rotation axis")
 
 
-	## Make a turn by a given angle onto plane:
-	#  - xz (rotation about y axis)
-	#  - yz (rotation about x axis)
-	#  - xy (rotation about z axis)
-	#
-	#  according to what has been set in #setAxis.
-	#
-	#  Add a new object (cylinder plus sphere) to the model and update the current position.
-	#
-	#  @param ang deviation from the previous direction.
-	#
-	def turn(self,ang):
-		self.curAng += ang
+## Make a turn by a given angle onto plane:
+#  - xz (rotation about y axis)
+#  - yz (rotation about x axis)
+#  - xy (rotation about z axis)
+#
+#  according to what has been set in #setAxis.
+#
+#  Add a new object (cylinder plus sphere) to the model and update the current position.
+#
+#  @param ang deviation from the previous direction.
+#
+def turn(self,ang):
+	self.curAng += ang
 		if self.Z:
-				self.nodes.append(
-								  (translate(self.curPoint.tolist()[:-1]))	# remove fourth coordinate
-								  (rotate(a = [-90, 0, self.curAng]) 		# rotation order: x, y and z
-								   #(sphere(self.r))
-								   (cylinder(self.r, self.h))))
+			self.nodes.append(
+							  (translate(self.curPoint.tolist()[:-1]))	# remove fourth coordinate
+							  (rotate(a = [-90, 0, self.curAng]) 		# rotation order: x, y and z
+							   #(sphere(self.r))
+							   (cylinder(self.r, self.h))))
 		else:
-				self.nodes.append(
-								  (translate(self.curPoint.tolist()[:-1]))	# remove fourth coordinate
-								  (rotate(a = self.curAng, v = self.axis)		# entering the screen
-								   #(sphere(self.r))
-								   (cylinder(self.r, self.h))))
-
+			self.nodes.append(
+							  (translate(self.curPoint.tolist()[:-1]))	# remove fourth coordinate
+							  (rotate(a = self.curAng, v = self.axis)		# entering the screen
+							   #(sphere(self.r))
+							   (cylinder(self.r, self.h))))
+		
 		if True:
-				if self.Z: ang = -ang
+			if self.Z: ang = -ang
 				self.curVector = self.rotFunc(self.curVector, ang )
 		else:
 			if not self.Z: ang = -ang
@@ -283,20 +283,20 @@ class turtle(object):
 			mat = mat.tolist()
 			self.curVector = np.dot (self.curVector, mat)
 		# update current position
-		self.curPoint = np.add(self.curPoint, self.curVector)
-		
-		#print("curPoint = %s" % self.curPoint)
-		#print("curVector = %s" % self.curVector)
-		#print("curAng = %f\n" % self.curAng)
-		
-	## Return the nodes created so far.
-	#  @return a union with the node list.
-	#
-	def getNodes(self):
-		return union()(self.nodes)
+	self.curPoint = np.add(self.curPoint, self.curVector)
 
-   
-## Silly test that draws a bunch of cylinders. 
+#print("curPoint = %s" % self.curPoint)
+#print("curVector = %s" % self.curVector)
+#print("curAng = %f\n" % self.curAng)
+
+## Return the nodes created so far.
+#  @return a union with the node list.
+#
+def getNodes(self):
+	return union()(self.nodes)
+
+
+## Silly test that draws a bunch of cylinders.
 def test(d):
 	t = turtle(h=d)
 	
@@ -320,7 +320,7 @@ def test(d):
 	return t.getNodes()
 
 ## Interpret a given sentence and draw the result.
-# 
+#
 #  - F move forward a step of length d
 #  - f Move forward a step of length d without drawing a line
 #  - + Turn left by angle a
@@ -340,7 +340,7 @@ def draw(lSentence, angle, d):
 	stack = []
 	a = 0
 	t = turtle(h=d)
-
+	
 	for c in characters:
 		if (c == 'F'):
 			t.turn(a)
@@ -378,7 +378,7 @@ def draw(lSentence, angle, d):
 		else:
 			continue
 
-	return t.getNodes()
+return t.getNodes()
 
 
 ## Generate and draw the fractal resulting from the following parameters
@@ -411,8 +411,8 @@ def lSystem(n, sentence, a, d, rules):
 
 def rn(aa, bb):
 	'''A Normal random variable generator that takes a range, like
-	random.uniform, instead of mean and standard deviation.'''
-    
+		random.uniform, instead of mean and standard deviation.'''
+	
 	return np.random.normal((bb+aa)/2., (bb-aa)/4.)
 
 ru = np.random.uniform
@@ -421,58 +421,58 @@ ri = np.random.randint
 
 ## Create a stem and leaf
 def stemAndLeaf():
-		# Radius and height of the stem
-		stemR = rn(.9, 1.1) 
-		stemH = rn(8, 12) 
-
+	# Radius and height of the stem
+	stemR = rn(.9, 1.1)
+		stemH = rn(8, 12)
+		
 		# Radius and height of the leaf
-		leafR = rn(4, 6) 
-		leafH = rn(.8, 1.2) 
-
+		leafR = rn(4, 6)
+		leafH = rn(.8, 1.2)
+		
 		# The stem will be represented by a cylynder with radius = stemR and height = stemH
 		# Note that a small number of fragments are used to model the cylinder
-		cylStem = cylinder(r = stemR, h = stemH) 
-		cylStem.add_param('$fn', ri(4, 8)) 
-
+		cylStem = cylinder(r = stemR, h = stemH)
+		cylStem.add_param('$fn', ri(4, 8))
+		
 		# The leaf will be represented by a cylynder with radius = leafR and height = leafH
-		# Note that the leaf height is very short, and only a small number of fragments 
+		# Note that the leaf height is very short, and only a small number of fragments
 		# are used to model the cylinder - giving the leaves their "pentagon" shape
-		cylLeaf = cylinder(r = leafR, h = leafH) 
+		cylLeaf = cylinder(r = leafR, h = leafH)
 		cylLeaf.add_param('$fn', ri(4, 8))
-      
+		
 		# Perform a union on the stem and leaf cylinders
 		# Make sure the stems are halfway through the leaves
 		return union()(
-			cylStem,
-			translate([0, 0, stemH - (leafH)/2.])(cylLeaf),
-		)
+					   cylStem,
+					   translate([0, 0, stemH - (leafH)/2.])(cylLeaf),
+					   )
 
 
 ## Recursive method to generate more branches in the tree
 #  @param numIter - number of iterations
-#  @param scaleFactor - branch scale factor 
+#  @param scaleFactor - branch scale factor
 #  @param xRot - x-axis angle of rotation
 def addBranches(numIter = 3, scaleFactor = 0.7, xRot = 15):
-		# Calculate the number of new branches to be atteched to the last generated branch
-		numBranches = ri(3, 5)
-
+	# Calculate the number of new branches to be atteched to the last generated branch
+	numBranches = ri(3, 5)
+		
 		# Radius and height of the stem
 		stemR = rn(.9, 1.1)
 		stemH = rn(8, 12)
 		
 		# Branch scaling factor
 		scaleFactor = rn(.6, .8)
-
+		
 		# Append the 'base' stem to the nodes list
 		nodes = []
 		nodes.append(cylinder(r = stemR, h = stemH))
-
+		
 		# For each of the children branches, calculate a random position
 		branchPos = [ru(.4, 1) for i in range(numBranches)]
 		maxBP = max(branchPos)
-
-		# Transform each branch position to be the ratio of the 
-		# current branch position : the position of the farthest branch 
+		
+		# Transform each branch position to be the ratio of the
+		# current branch position : the position of the farthest branch
 		branchPos = [branchPos[i] / maxBP for i in range(numBranches)]
 		for i in range(numBranches):
 			# Generate a random x-axis rotation
@@ -481,13 +481,13 @@ def addBranches(numIter = 3, scaleFactor = 0.7, xRot = 15):
 			zRot = i * (360./numBranches)
 			# Position in relation to parent
 			posIRP = branchPos[i] * stemH * .9
-
+			
 			# Append the newly created branch (with its designated position and scale) to the nodes list
 			nodes.append(
-				translate([0, 0, posIRP])
-				(scale(scaleFactor)(rotate(a = [xRot, 0, zRot])
-				(genTree(numIter - 1, scaleFactor, xRot))))
-				)
+						 translate([0, 0, posIRP])
+						 (scale(scaleFactor)(rotate(a = [xRot, 0, zRot])
+											 (genTree(numIter - 1, scaleFactor, xRot))))
+						 )
 		# Perform a union on all branches in the node list
 		return union()(nodes)
 
@@ -514,18 +514,18 @@ def treeWithBase(tree):
 	trunk2.add_param('$fn', 5)
 	
 	return union()(
-			base,
-			trunk1,
-			trunk2,
-			tree,
-		   )
+				   base,
+				   trunk1,
+				   trunk2,
+				   tree,
+				   )
 
 if __name__ == '__main__':
-
+	
 	#recTree = treeWithBase(genTree(5))
 	
 	lSysO = fractalPlant2()
 	lTree = lSystem(lSysO.iterations, lSysO.sentence, lSysO.angle, 4, lSysO.rules)
-
+	
 	scad_render_to_file(lTree, file_header='$fn = %s;' % SEGMENTS, include_orig_code=True)
 

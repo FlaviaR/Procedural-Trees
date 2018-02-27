@@ -128,8 +128,8 @@ def buildLSystem(n, sentence, rules):
 				next += buildLSystem(n-1, rules[c], rules);
 			else:
 				next += c
-else:
-	return sentence
+	else:
+		return sentence
 	
 	return next
 
@@ -248,19 +248,19 @@ class turtle(object):
 #exit("Invalid rotation axis")
 
 
-## Make a turn by a given angle onto plane:
-#  - xz (rotation about y axis)
-#  - yz (rotation about x axis)
-#  - xy (rotation about z axis)
-#
-#  according to what has been set in #setAxis.
-#
-#  Add a new object (cylinder plus sphere) to the model and update the current position.
-#
-#  @param ang deviation from the previous direction.
-#
-def turn(self,ang):
-	self.curAng += ang
+	## Make a turn by a given angle onto plane:
+	#  - xz (rotation about y axis)
+	#  - yz (rotation about x axis)
+	#  - xy (rotation about z axis)
+	#
+	#  according to what has been set in #setAxis.
+	#
+	#  Add a new object (cylinder plus sphere) to the model and update the current position.
+	#
+	#  @param ang deviation from the previous direction.
+	#
+	def turn(self,ang):
+		self.curAng += ang
 		if self.Z:
 			self.nodes.append(
 							  (translate(self.curPoint.tolist()[:-1]))	# remove fourth coordinate
@@ -276,24 +276,24 @@ def turn(self,ang):
 		
 		if True:
 			if self.Z: ang = -ang
-				self.curVector = self.rotFunc(self.curVector, ang )
+			self.curVector = self.rotFunc(self.curVector, ang )
 		else:
 			if not self.Z: ang = -ang
 			mat = matrix.rotate(ang, self.axis[0], self.axis[1], self.axis[2])
 			mat = mat.tolist()
 			self.curVector = np.dot (self.curVector, mat)
-		# update current position
-	self.curPoint = np.add(self.curPoint, self.curVector)
+			# update current position
+		self.curPoint = np.add(self.curPoint, self.curVector)
 
-#print("curPoint = %s" % self.curPoint)
-#print("curVector = %s" % self.curVector)
-#print("curAng = %f\n" % self.curAng)
+	#print("curPoint = %s" % self.curPoint)
+	#print("curVector = %s" % self.curVector)
+	#print("curAng = %f\n" % self.curAng)
 
-## Return the nodes created so far.
-#  @return a union with the node list.
-#
-def getNodes(self):
-	return union()(self.nodes)
+	## Return the nodes created so far.
+	#  @return a union with the node list.
+	#
+	def getNodes(self):
+		return union()(self.nodes)
 
 
 ## Silly test that draws a bunch of cylinders.
@@ -378,7 +378,7 @@ def draw(lSentence, angle, d):
 		else:
 			continue
 
-return t.getNodes()
+	return t.getNodes()
 
 
 ## Generate and draw the fractal resulting from the following parameters
@@ -423,29 +423,29 @@ ri = np.random.randint
 def stemAndLeaf():
 	# Radius and height of the stem
 	stemR = rn(.9, 1.1)
-		stemH = rn(8, 12)
-		
-		# Radius and height of the leaf
-		leafR = rn(4, 6)
-		leafH = rn(.8, 1.2)
-		
-		# The stem will be represented by a cylynder with radius = stemR and height = stemH
-		# Note that a small number of fragments are used to model the cylinder
-		cylStem = cylinder(r = stemR, h = stemH)
-		cylStem.add_param('$fn', ri(4, 8))
-		
-		# The leaf will be represented by a cylynder with radius = leafR and height = leafH
-		# Note that the leaf height is very short, and only a small number of fragments
-		# are used to model the cylinder - giving the leaves their "pentagon" shape
-		cylLeaf = cylinder(r = leafR, h = leafH)
-		cylLeaf.add_param('$fn', ri(4, 8))
-		
-		# Perform a union on the stem and leaf cylinders
-		# Make sure the stems are halfway through the leaves
-		return union()(
-					   cylStem,
-					   translate([0, 0, stemH - (leafH)/2.])(cylLeaf),
-					   )
+	stemH = rn(8, 12)
+	
+	# Radius and height of the leaf
+	leafR = rn(4, 6)
+	leafH = rn(.8, 1.2)
+	
+	# The stem will be represented by a cylynder with radius = stemR and height = stemH
+	# Note that a small number of fragments are used to model the cylinder
+	cylStem = cylinder(r = stemR, h = stemH)
+	cylStem.add_param('$fn', ri(4, 8))
+	
+	# The leaf will be represented by a cylynder with radius = leafR and height = leafH
+	# Note that the leaf height is very short, and only a small number of fragments
+	# are used to model the cylinder - giving the leaves their "pentagon" shape
+	cylLeaf = cylinder(r = leafR, h = leafH)
+	cylLeaf.add_param('$fn', ri(4, 8))
+	
+	# Perform a union on the stem and leaf cylinders
+	# Make sure the stems are halfway through the leaves
+	return union()(
+				   cylStem,
+				   translate([0, 0, stemH - (leafH)/2.])(cylLeaf),
+				   )
 
 
 ## Recursive method to generate more branches in the tree
@@ -456,40 +456,40 @@ def addBranches(numIter = 3, scaleFactor = 0.7, xRot = 15):
 	# Calculate the number of new branches to be atteched to the last generated branch
 	numBranches = ri(3, 5)
 		
-		# Radius and height of the stem
-		stemR = rn(.9, 1.1)
-		stemH = rn(8, 12)
+	# Radius and height of the stem
+	stemR = rn(.9, 1.1)
+	stemH = rn(8, 12)
+	
+	# Branch scaling factor
+	scaleFactor = rn(.6, .8)
+	
+	# Append the 'base' stem to the nodes list
+	nodes = []
+	nodes.append(cylinder(r = stemR, h = stemH))
+	
+	# For each of the children branches, calculate a random position
+	branchPos = [ru(.4, 1) for i in range(numBranches)]
+	maxBP = max(branchPos)
+	
+	# Transform each branch position to be the ratio of the
+	# current branch position : the position of the farthest branch
+	branchPos = [branchPos[i] / maxBP for i in range(numBranches)]
+	for i in range(numBranches):
+		# Generate a random x-axis rotation
+		xRot = rn(35, 55)
+		# Prevent branches from being placed too close together
+		zRot = i * (360./numBranches)
+		# Position in relation to parent
+		posIRP = branchPos[i] * stemH * .9
 		
-		# Branch scaling factor
-		scaleFactor = rn(.6, .8)
-		
-		# Append the 'base' stem to the nodes list
-		nodes = []
-		nodes.append(cylinder(r = stemR, h = stemH))
-		
-		# For each of the children branches, calculate a random position
-		branchPos = [ru(.4, 1) for i in range(numBranches)]
-		maxBP = max(branchPos)
-		
-		# Transform each branch position to be the ratio of the
-		# current branch position : the position of the farthest branch
-		branchPos = [branchPos[i] / maxBP for i in range(numBranches)]
-		for i in range(numBranches):
-			# Generate a random x-axis rotation
-			xRot = rn(35, 55)
-			# Prevent branches from being placed too close together
-			zRot = i * (360./numBranches)
-			# Position in relation to parent
-			posIRP = branchPos[i] * stemH * .9
-			
-			# Append the newly created branch (with its designated position and scale) to the nodes list
-			nodes.append(
-						 translate([0, 0, posIRP])
-						 (scale(scaleFactor)(rotate(a = [xRot, 0, zRot])
-											 (genTree(numIter - 1, scaleFactor, xRot))))
-						 )
-		# Perform a union on all branches in the node list
-		return union()(nodes)
+		# Append the newly created branch (with its designated position and scale) to the nodes list
+		nodes.append(
+					 translate([0, 0, posIRP])
+					 (scale(scaleFactor)(rotate(a = [xRot, 0, zRot])
+										 (genTree(numIter - 1, scaleFactor, xRot))))
+					 )
+	# Perform a union on all branches in the node list
+	return union()(nodes)
 
 def genTree(numIter = 3, scaleFactor = .7, xRot = 15):
 	# attach a leaf and stem to the end of the branch

@@ -131,7 +131,6 @@ class turtle(object):
 	#
 	def turn(self,ang):
 		self.curAng += ang
-		print (self.useSpheres)
 		if self.dir == 'Z':
 			if self.useSpheres:
 				self.nodes.append(

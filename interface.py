@@ -12,6 +12,8 @@ class Example(QWidget):
 		self.treeBuilder = BuildTree()
 		self.buildRec = False
 		self.addSphere = False
+		self.ruleDict = self.treeBuilder.rules.fetchRules()
+		self.func = self.treeBuilder.rules.kochCurve1()
 		self.initUI()
 		
 		
@@ -21,7 +23,9 @@ class Example(QWidget):
 
 		pre_Rules = QLabel('Preset Rules')
 		combo = QComboBox(self)
-		combo.addItem("Koch Curve")
+		for key in self.ruleDict:
+			combo.addItem(key)
+		combo.activated[str].connect(self.onActivated)
 
 		own_Rules = QLabel('Make Your Own Rules')
 		rulesEdit = QLineEdit()
@@ -57,6 +61,9 @@ class Example(QWidget):
 		self.setWindowTitle('Tree Builder')
 		self.show()
 
+	def onActivated(self, text):
+		self.func = self.ruleDict[text]
+
 	def on_click(self):
 		if self.buildRec:
 			self.treeBuilder.draw(rec = True)
@@ -64,7 +71,7 @@ class Example(QWidget):
 			return
 				
 		self.treeBuilder.useSpheres(self.addSphere)
-		self.treeBuilder.draw(rule = self.treeBuilder.rules.kochCurve1())
+		self.treeBuilder.draw(rule = self.func)
 		subprocess.call(["open", "BuildTree.scad"])
 
 	def setSpheres(self, state):

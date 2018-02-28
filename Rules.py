@@ -77,3 +77,6 @@ class Rules():
 		i = 5
 		r = {'X':"F-[[X]+X]+F[+FX]-X", 'F':"FF"}
 		return lSystemObj.LSysObj(a, s, i, r)
+
+	def fetchRules(self):
+		return {"kochCurve1":self.kochCurve1(), "kochCurve2":self.kochCurve2(), "kochCurve3":self.kochCurve3(), "hilbert3D":self.hilbert3D(), "TwoDTree1":self.TwoDTree1(), "TwoDTree2":self.TwoDTree2(), "TwoDTree3":self.TwoDTree3(), "fractalPlant1":self.fractalPlant1(), "fractalPlant2":self.fractalPlant2(), "fractalPlant3":self.fractalPlant3()}

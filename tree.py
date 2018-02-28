@@ -24,6 +24,8 @@ from solid.utils import *
 
 SEGMENTS = 48
 
+
+
 # # ---------------- Rules ------------ ---------------------------------------------------
 
 ## Segmentation fault if n > 2 in OpenSCAD
@@ -207,45 +209,42 @@ class turtle(object):
 		## Current position.
 		self.curPoint = np.array([0,  0,  0, 1])
 		
+		# Indicates the rotation direction.
+		self.dir = None
+
+
 		## Rotation axis.
-		self.axis = [0,  0,  -1]
-		self.rotFunc = zAxisRot
-		self.curVector = np.array([0, self.h, 0, 0])
-		self.Z = True
-		self.curAng = 0
+		self.setAxis('Z')
 	
 	## Sets the rotation axis.
 	#
-	#  @param axis character identifying a coordinate axis.
+	#  @param dir character identifying a coordinate axis: X, Y or Z.
 	#
-	def setAxis(self, axis):
-		## Indicates rotations about Z axis.
-		self.Z = False
+	def setAxis(self, dir):
+		if dir == self.dir :
+			return # nothing has changed
 		
 		## Current angle.
-		# self.curAng = 0
-		if axis == 'X':
-			if (self.axis != [-1, 0, 0]):
-				## Rotation axis.
-				self.axis  = [-1,  0,  0]
-				## Points to the function that rotates about the chosen axis.
-				self.rotFunc = xAxisRot
-				## Current direction.
-				self.curVector = np.array([0, 0, self.h, 0])
-		elif axis == 'Y':
-			if (self.axis != [0, -1, 0]):
-				self.axis = [0,  -1,  0]
-				self.rotFunc = yAxisRot
-				self.curVector = np.array([0, 0, self.h, 0])
+		self.curAng = 0
+		self.dir = dir
+		
+		if dir == 'X':
+			## Rotation axis.
+			self.axis  = [-1,  0,  0]
+			## Points to the function that rotates about the chosen axis.
+			self.rotFunc = xAxisRot
+			## Current direction.
+			self.curVector = np.array([0, 0, self.h, 0])
+		elif dir == 'Y':
+			self.axis = [0,  -1,  0]
+			self.rotFunc = yAxisRot
+			self.curVector = np.array([0, 0, self.h, 0])
 		else:
-			self.Z = True
-			
-			if (self.axis != [0, 0, -1]):
-				self.curAng = 0
-				self.axis = [0,  0,  -1]
-				self.rotFunc = zAxisRot
-				self.curVector = np.array([0, self.h, 0, 0])
-#exit("Invalid rotation axis")
+			self.axis = [0,  0,  -1]
+			self.rotFunc = zAxisRot
+			self.curVector = np.array([0, self.h, 0, 0])
+	#exit("Invalid rotation axis")
+
 
 
 	## Make a turn by a given angle onto plane:
@@ -261,7 +260,7 @@ class turtle(object):
 	#
 	def turn(self,ang):
 		self.curAng += ang
-		if self.Z:
+		if self.dir == 'Z':
 			self.nodes.append(
 							  (translate(self.curPoint.tolist()[:-1]))	# remove fourth coordinate
 							  (rotate(a = [-90, 0, self.curAng]) 		# rotation order: x, y and z
@@ -275,10 +274,10 @@ class turtle(object):
 							   (cylinder(self.r, self.h))))
 		
 		if True:
-			if self.Z: ang = -ang
+			if self.dir == 'Z': ang = -ang
 			self.curVector = self.rotFunc(self.curVector, ang )
 		else:
-			if not self.Z: ang = -ang
+			if not self.dir == 'Z': ang = -ang
 			mat = matrix.rotate(ang, self.axis[0], self.axis[1], self.axis[2])
 			mat = mat.tolist()
 			self.curVector = np.dot (self.curVector, mat)
@@ -485,8 +484,9 @@ def addBranches(numIter = 3, scaleFactor = 0.7, xRot = 15):
 		# Append the newly created branch (with its designated position and scale) to the nodes list
 		nodes.append(
 					 translate([0, 0, posIRP])
-					 (scale(scaleFactor)(rotate(a = [xRot, 0, zRot])
-										 (genTree(numIter - 1, scaleFactor, xRot))))
+					 (scale(scaleFactor)
+					 (rotate(a = [xRot, 0, zRot])
+					 (genTree(numIter - 1, scaleFactor, xRot))))
 					 )
 	# Perform a union on all branches in the node list
 	return union()(nodes)

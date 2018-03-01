@@ -37,8 +37,9 @@ class BuildTree():
 			lTree = self.recTree.genTree()
 		elif not rec and rule is not None:
 			lTree = self.lSys.lSystem(rule.iterations, rule.sentence, rule.angle, 4, rule.rules)
-		if addBase and not rec:
-			lTree = treeWithBase(lTree)
+		if addBase:
+			lTree = self.treeWithBase(lTree)
+		
 		scad_render_to_file(lTree, file_header='$fn = %s;' % self.SEGMENTS, include_orig_code=True)
 
 	def useSpheres(self, state):

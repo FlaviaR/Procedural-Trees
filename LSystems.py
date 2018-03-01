@@ -117,7 +117,6 @@ class turtle(object):
 	#exit("Invalid rotation axis")
 
 
-
 	## Make a turn by a given angle onto plane:
 	#  - xz (rotation about y axis)
 	#  - yz (rotation about x axis)

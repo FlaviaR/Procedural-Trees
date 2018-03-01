@@ -76,6 +76,7 @@ class Example(QWidget):
 		
 		if self.buildRec:
 			self.treeBuilder.draw(rec = True)
+			subprocess.call(["open", "BuildTree.scad"])
 			return
 		
 		if text is not '':

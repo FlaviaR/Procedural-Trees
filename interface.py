@@ -28,7 +28,7 @@ class Example(QWidget):
 		combo.activated[str].connect(self.onActivated)
 
 		own_Rules = QLabel('Make Your Own Rules')
-		rulesEdit = QLineEdit()
+		self.rulesEdit = QLineEdit()
 		
 		spheres = QCheckBox('Add Spheres', self)
 		spheres.stateChanged.connect(self.setSpheres)
@@ -38,6 +38,9 @@ class Example(QWidget):
 
 		build = QPushButton('Build Tree!', self)
 		build.clicked.connect(self.on_click)
+
+		console = QLabel('CONSOLE')
+		consoleInfo = QLabel('')
 
 		grid = QGridLayout()
 		grid.setSpacing(10)
@@ -49,11 +52,14 @@ class Example(QWidget):
 		grid.addWidget(combo, 2, 1)
 
 		grid.addWidget(own_Rules, 3, 0)
-		grid.addWidget(rulesEdit, 3,1)
+		grid.addWidget(self.rulesEdit, 3,1)
 
 		grid.addWidget(spheres, 4, 0)
 		grid.addWidget(rec, 4, 1)
 		grid.addWidget(build, 4, 2)
+
+		grid.addWidget(console, 5, 0 )
+		grid.addWidget(consoleInfo, 5, 1)
 
 		self.setLayout(grid)
 		
@@ -65,13 +71,32 @@ class Example(QWidget):
 		self.func = self.ruleDict[text]
 
 	def on_click(self):
+		rules = self.func
+		text = self.rulesEdit.text()
+		
 		if self.buildRec:
 			self.treeBuilder.draw(rec = True)
-			subprocess.call(["open", "BuildTree.scad"])
 			return
-				
+		
+		if text is not '':
+			r = text.split(',')
+			a = float(r[0])
+			s = r[1]
+			n = int(r[2])
+			d = {}
+			i = 3
+			while i < len(r) - 1:
+				key = r[i]
+				val = r[i+1]
+				if key is not "" and val is not "":
+					d[key] = val
+
+				i += 2
+
+			rules = self.treeBuilder.rules.createCustomRule(a, s, n, d)
+			
 		self.treeBuilder.useSpheres(self.addSphere)
-		self.treeBuilder.draw(rule = self.func)
+		self.treeBuilder.draw(rule = rules)
 		subprocess.call(["open", "BuildTree.scad"])
 
 	def setSpheres(self, state):

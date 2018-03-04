@@ -45,21 +45,25 @@ class Example(QWidget):
 		grid = QGridLayout()
 		grid.setSpacing(10)
 
-		grid.addWidget(pre_Rules, 3, 2)
-		grid.addWidget(combo, 4, 2)
+		grid.addWidget(rulesTitle, 1, 1)
+		grid.addWidget(rules, 2, 1)
 
-		grid.addWidget(own_Rules, 5, 2)
-		grid.addWidget(self.ownAngle, 6,2)
-		grid.addWidget(self.ownNum, 7,2)
-		grid.addWidget(self.ownSentence, 8,2)
-		grid.addWidget(self.ownRules, 9,2)
 
-		grid.addWidget(rulesTitle, 1, 3)
-		grid.addWidget(rules, 2, 3)
-		grid.addWidget(build, 3, 3)
+		grid.addWidget(pre_Rules, 3, 1)
+		grid.addWidget(combo, 4, 1)
 
-		grid.addWidget(spheres, 3, 4)
-		grid.addWidget(rec, 4, 4)
+		grid.addWidget(own_Rules, 5, 1)
+		grid.addWidget(self.ownAngle, 6,1)
+		grid.addWidget(self.ownNum, 7,1)
+		grid.addWidget(self.ownSentence, 8,1)
+		grid.addWidget(self.ownRules, 9,1)
+
+
+		grid.addWidget(spheres, 10, 1)
+		grid.addWidget(rec, 11, 1)
+
+		grid.addWidget(build, 12, 1)
+
 
 		self.setLayout(grid)
 		

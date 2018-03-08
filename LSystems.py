@@ -92,7 +92,6 @@ class LSystem():
 				t.yaw(a)
 			elif (c == '['):
 				tup = (t.curPoint, t.rotVector, t.rotMatrix)
-				print (tup)
 				stack.append(tup)
 			elif (c == ']'):
 				val = stack.pop()

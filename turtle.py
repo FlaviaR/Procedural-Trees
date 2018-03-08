@@ -114,7 +114,7 @@ colors = {"green":          (0.0,1.0,0.0),
 #  <br>
 class turtle(object):
 	__fullDebug__ = False
-	__toDebug__ = True
+	__toDebug__ = False
 
 	## Constructor.
 	#
@@ -210,7 +210,7 @@ class turtle(object):
 	#  If the pen is down, draw line. 
 	#  Do not change the turtle’s orientation.
 	#
-	def setposition(self,x,y,z):
+	def setPosition(self,x,y,z):
 		if not self.controlColor:
 			self.pencolor("pumpkin orange")
 
@@ -243,15 +243,7 @@ class turtle(object):
 		ang = np.rad2deg(math.acos(np.clip(np.dot(Z, v),-1,1)))
 
 		if self.isdown():
-			self.nodes.append(
-				(translate(self.position()))
-				(rotate(a = ang, v = axis.tolist())
-					(color(self.color)
-						(sphere(self.r))
-						(cylinder(self.r, self.h))
-					)
-				)
-			)
+			self.addNode2(ang, axis.tolist())
 
 		## Current position.
 		self.curPoint = np.array([x,  y,  z, 1])
@@ -492,7 +484,7 @@ class turtle(object):
 	#
 	#  @param rd True for rounded cylinders.
 	#
-	def setRounded(self, rd=True):
+	def setRounded(self, rd=False):
 		self.round = rd
 		
 	## Add a new node to the openscad tree.
@@ -512,7 +504,6 @@ class turtle(object):
 			h = self.h
 		if rd is None:
 			rd = self.round
-										
 		if rd:
 			self.nodes.append(
 				(color(c))
@@ -884,11 +875,11 @@ def knot():
 	t = TMIN
 	position = pos(n,t)
 	td.penup()
-	td.setposition(position[0], position[1], position[2])
+	td.setPosition(position[0], position[1], position[2])
 	td.pendown()
 	while t <= TMAX:
 		position = pos(n,t)
-		td.setposition(position[0], position[1], position[2])
+		td.setPosition(position[0], position[1], position[2])
 		t += TSTEP
 
 	return td.getNodes()

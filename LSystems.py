@@ -63,7 +63,7 @@ class LSystem():
 		stack = []
 		a = 0
 		t = turtle(h=d)
-		t.drawSpheres(self.spheres)
+		t.setRounded(rd = self.spheres)
 		
 		for c in characters:
 			if (c == 'F'):
@@ -88,8 +88,8 @@ class LSystem():
 				a = -angle
 				t.roll(a)
 			elif (c == '|'):
-				t.backward(d)
 				a = 180
+				t.yaw(a)
 			elif (c == '['):
 				tup = (t.curPoint, t.rotVector, t.rotMatrix)
 				print (tup)
@@ -113,6 +113,7 @@ class LSystem():
 	#  @param rules - a dictionary containing an axiom:rule key:value pair, they're both expected to be strings
 	def lSystem(self, n, sentence, a, d, rules):
 		lSentence = self.buildLSystem(n, sentence, rules)
+		print (lSentence)
 		return self.draw(lSentence, a, d)
 
 ## Silly test that draws a bunch of cylinders.

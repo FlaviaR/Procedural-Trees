@@ -145,6 +145,9 @@ class turtle(object):
 		## Whether coordinate axes should be drawn.
 		self.showAxes = False
 
+	def setDebug(self, state):
+		self.__toDebug__ = state
+	
 	## Delete the turtle’s drawings from the screen, 
 	#  re-center the turtle and set variables to the default values.
 	#

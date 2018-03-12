@@ -12,36 +12,38 @@ class Example(QWidget):
 		self.treeBuilder = BuildTree()
 		self.buildRec = False
 		self.addSphere = False
+		self.addBase = False
+		self.addDebug = False
 		self.ruleDict = self.treeBuilder.rules.fetchRules()
 		self.func = self.treeBuilder.rules.kochCurve1()
 		self.initUI()
 		
 		
 	def initUI(self):
-		rulesTitle = QLabel('L-System Rules')
+		rulesTitle = QLabel('----------L-System Rules-----------')
 		rules = QLabel("F - Move forward a step of length d\n+ - Turn left by angle a\n- - Turn right by angle a\n& - Pitch down by angle a\n^ - Pitch up by angle a\n\ - Roll left by angle a\n/ - Roll right by angle a\n| - Turn arund (180 deg)\n[ - Push current drawing to stack\n] - Pop current drawing from stack")
 
-		pre_Rules = QLabel('Pre-made Rules')
+		pre_Rules = QLabel('----------Pre-made Rules----------')
 		combo = QComboBox(self)
 		for key in self.ruleDict:
 			combo.addItem(key)
 		combo.activated[str].connect(self.onActivated)
 
-		options = QLabel('Options')
+		options = QLabel('---------------Options---------------')
+		spheres = QCheckBox('Add Spheres', self)
+		spheres.stateChanged.connect(self.setSpheres)
+		base = QCheckBox('Add Base To Model', self)
+		base.stateChanged.connect(self.setBase)
+		debug = QCheckBox('Set Debug', self)
+		debug.stateChanged.connect(self.setDebug)
+		rec = QCheckBox('No L-System - Recursive Tree', self)
+		rec.stateChanged.connect(self.setRec)
 
-		
-
-		own_Rules = QLabel('Make Your Own Rules')
+		own_Rules = QLabel('--------Make Your Own Rules--------')
 		self.ownAngle = QLineEdit()
 		self.ownNum = QLineEdit()
 		self.ownSentence = QLineEdit()
 		self.ownRules = QLineEdit()
-		
-		spheres = QCheckBox('Add Spheres', self)
-		spheres.stateChanged.connect(self.setSpheres)
-
-		rec = QCheckBox('No L-System - Recursive Tree', self)
-		rec.stateChanged.connect(self.setRec)
 
 		build = QPushButton('Build Tree!', self)
 		build.clicked.connect(self.on_click)
@@ -52,21 +54,22 @@ class Example(QWidget):
 		grid.addWidget(rulesTitle, 1, 1)
 		grid.addWidget(rules, 2, 1)
 
-
 		grid.addWidget(pre_Rules, 3, 1)
 		grid.addWidget(combo, 4, 1)
 
-		grid.addWidget(own_Rules, 5, 1)
-		grid.addWidget(self.ownAngle, 6,1)
-		grid.addWidget(self.ownNum, 7,1)
-		grid.addWidget(self.ownSentence, 8,1)
-		grid.addWidget(self.ownRules, 9,1)
+		grid.addWidget(options, 5, 1)
+		grid.addWidget(spheres, 6, 1)
+		grid.addWidget(base, 7, 1)
+		grid.addWidget(debug, 8, 1)
+		grid.addWidget(rec, 9, 1)
 
+		grid.addWidget(own_Rules, 10, 1)
+		grid.addWidget(self.ownAngle, 11,1)
+		grid.addWidget(self.ownNum, 12,1)
+		grid.addWidget(self.ownSentence, 13,1)
+		grid.addWidget(self.ownRules, 14,1)
 
-		grid.addWidget(spheres, 10, 1)
-		grid.addWidget(rec, 11, 1)
-
-		grid.addWidget(build, 12, 1)
+		grid.addWidget(build, 15, 1)
 
 
 		self.setLayout(grid)
@@ -113,11 +116,19 @@ class Example(QWidget):
 			rules = self.buildOwnTree()
 		
 		self.treeBuilder.useSpheres(self.addSphere)
-		self.treeBuilder.draw(rule = rules)
+		self.treeBuilder.useBase(self.addBase)
+		self.treeBuilder.printDebug(self.addDebug)
+		self.treeBuilder.draw(rule = rules, addBase = self.addBase)
 		subprocess.call(["open", "BuildTree.scad"])
 
 	def setSpheres(self, state):
 		self.addSphere = not self.addSphere
+
+	def setDebug(self, state):
+		self.addDebug = not self.addDebug
+
+	def setBase(self, state):
+		self.addBase = not self.addBase
 
 	def setRec(self, state):
 		self.buildRec = not self.buildRec

@@ -31,6 +31,7 @@ class BuildTree():
 		self.recTree = RecTree()
 		self.lSys = LSystem()
 		self.rules = Rules()
+		self.base = False
 
 	def draw(self, rec = False, rule = None, addBase = False):
 		if rec:
@@ -42,6 +43,12 @@ class BuildTree():
 		
 		scad_render_to_file(lTree, file_header='$fn = %s;' % self.SEGMENTS, include_orig_code=True)
 
+	def useBase(self, state):
+		self.base = state
+
+	def printDebug(self, state):
+		self.lSys.printDebug(state)
+	
 	def useSpheres(self, state):
 		self.lSys.useSpheres(state)
 	

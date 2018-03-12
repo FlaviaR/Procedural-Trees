@@ -9,7 +9,12 @@ class LSystem():
 	
 	def __init__(self):
 		self.spheres = False
+		self.debug = False
 		self.turtle = turtle()
+	
+	def printDebug(self, state):
+		self.debug = state
+	
 	def useSpheres(self, state):
 		self.spheres = state
 
@@ -66,6 +71,7 @@ class LSystem():
 		a = 0
 		t = turtle(h=d)
 		t.setRounded(rd = self.spheres)
+		t.setDebug(self.debug)
 		percent = 0.35
 		accumAngle = 0;
 		

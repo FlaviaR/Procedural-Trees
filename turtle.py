@@ -25,7 +25,6 @@
 # @see http://www.openscad.org/
 # @see https://github.com/SolidCode/SolidPython
 #
-# @author Flavia Cavalcanti
 # @since 22/02/2018
 #
 
@@ -131,6 +130,9 @@ class turtle(object):
 
 		## Cylinder height.
 		self.h = h
+
+		## Create rounded cylinders.
+		self.round = True
 	
 		## Whether pencolor has been called before.
 		self.controlColor = False
@@ -142,11 +144,6 @@ class turtle(object):
 
 		## Whether coordinate axes should be drawn.
 		self.showAxes = False
-
-		## Whether spheres between cylinders should be drawn.
-		#  Drawing the spheres makes the render lag quite a bit - only use them for printable models.
-		self.rounded = False
-
 
 	## Delete the turtle’s drawings from the screen, 
 	#  re-center the turtle and set variables to the default values.
@@ -165,14 +162,14 @@ class turtle(object):
 		self.rotVector = None
 
 		if self.__mode != "world":
-		## How to turn in 3D.
 			if self.__mode == "standard":
+				## How to turn in 3D.
 				self.turn = self.yaw
 			else:
 				self.turn = self.roll
 			self.turn(0)
-				#else:
-				#self.turn = self.__turn
+		else:
+			self.turn = self.__turn
 
 	## Set turtle mode (“standard”, “logo” or “world”) and perform reset. 
 	#  If mode is not given, current mode is returned.
@@ -210,7 +207,7 @@ class turtle(object):
 	#  If the pen is down, draw line. 
 	#  Do not change the turtle’s orientation.
 	#
-	def setPosition(self,x,y,z):
+	def setposition(self,x,y,z):
 		if not self.controlColor:
 			self.pencolor("pumpkin orange")
 
@@ -440,53 +437,13 @@ class turtle(object):
 			print("curVector = %s" % self.curVector)
 			print("curAng = %f\n" % self.curAng)
 
-	## Draw the intrisic coordinate axes.
-	def __drawAxes(self):
-			r = self.r/8
-			if self.__mode == "standard":
-				hx = self.h*0.8
-				hy = self.r*3
-				hz = self.r*3
-			else:
-				hx = self.r*3
-				hy = self.r*3
-				hz = self.h*0.8
-				
-			# draw the Z axis.
-			c = np.add(self.curPoint, self.h*self.rotVector/2)
-			m = matrix.dot(matrix.translate(c[0],c[1],c[2]), self.rotMatrix).tolist()
-			self.nodes.append(
-				(color([0,0,1]))
-				(multmatrix(m) 
-   					(cylinder(r, hz))
-				)
-			)
-			# draw the Y axis.
-			m = matrix.dot(self.rotMatrix, matrix.rotate(90,-1,0,0))
-			m = matrix.dot(matrix.translate(c[0],c[1],c[2]), m).tolist()
-			self.nodes.append(
-				(color([0,1,0]))
-				(multmatrix(m) 
-   					(cylinder(r, hy))
-				)
-			)
-			# draw the X axis.
-			m = matrix.dot(self.rotMatrix, matrix.rotate(90,0,1,0))
-			m = matrix.dot(matrix.translate(c[0],c[1],c[2]), m).tolist()
-			self.nodes.append(
-				(color([1,0,0]))
-				(multmatrix(m) 
-   					(cylinder(r, hx))
-				)
-			)
-
 	## Controls the shape of cylinder extremities.
 	#
 	#  @param rd True for rounded cylinders.
 	#
-	def setRounded(self, rd=False):
+	def setRounded(self, rd=True):
 		self.round = rd
-		
+
 	## Add a new node to the openscad tree.
 	#
 	#  @param m node transformation.
@@ -504,6 +461,7 @@ class turtle(object):
 			h = self.h
 		if rd is None:
 			rd = self.round
+		
 		if rd:
 			self.nodes.append(
 				(color(c))
@@ -517,18 +475,18 @@ class turtle(object):
 				(color(c))
 				(multmatrix(m)
 					(cylinder(r, h))
-			    )
+				)
 			)
- 
-	 ## Add a new node to the openscad tree.
-	 #
-	 #  @param ang rotation angle.
-	 #  @param axis rotation axis.
-	 #  @param c node color.
-	 #  @param r cylinder radius.
-	 #  @param h cylinder height.
-	 #  @param rd whether to create rounded cylinders.
-	 #
+
+	## Add a new node to the openscad tree.
+	#
+	#  @param ang rotation angle.
+	#  @param axis rotation axis.
+	#  @param c node color.
+	#  @param r cylinder radius.
+	#  @param h cylinder height.
+	#  @param rd whether to create rounded cylinders.
+	#
 	def addNode2(self, ang=None, axis=None, c=None, r=None, h=None, rd=None):
 		if ang is None:
 			ang = self.curAng
@@ -542,12 +500,12 @@ class turtle(object):
 			h = self.h
 		if rd is None:
 			rd = self.round
-
+		
 		if rd:
 			self.nodes.append(
 				(translate(self.position()))
-					(rotate(a = ang, v = axis)
-						(color(c)
+				(rotate(a = ang, v = axis)
+					(color(c)
 						(sphere(self.r))
 						(cylinder(r, h))
 					)
@@ -556,15 +514,39 @@ class turtle(object):
 		else:
 			self.nodes.append(
 				(translate(self.position()))
-					(rotate(a = ang, v = axis)
-						(color(c)
+				(rotate(a = ang, v = axis)
+					(color(c)
 						(cylinder(r, h))
 					)
 				)
 			)
+			
+	## Draw the intrisic coordinate axes.
+	def __drawAxes(self):
+			r = self.r/8
+			if self.__mode == "standard":
+				hx = self.h*0.8
+				hy = self.r*3
+				hz = self.r*3
+			else:
+				hx = self.r*3
+				hy = self.r*3
+				hz = self.h*0.8
+				
+			# draw the Z axis.
+			c = np.add(self.curPoint, self.h*self.rotVector/2)
+			m = matrix.dot(matrix.translate(c[0],c[1],c[2]), self.rotMatrix).tolist()
+			self.addNode(m, [0,0,1], r, hz, False)
+			# draw the Y axis.
+			m = matrix.dot(self.rotMatrix, matrix.rotate(90,-1,0,0))
+			m = matrix.dot(matrix.translate(c[0],c[1],c[2]), m).tolist()
+			self.addNode(m, [0,1,0], r, hy, False)
+			# draw the X axis.
+			m = matrix.dot(self.rotMatrix, matrix.rotate(90,0,1,0))
+			m = matrix.dot(matrix.translate(c[0],c[1],c[2]), m).tolist()
+			self.addNode(m, [1,0,0], r, hx, False)
 
-
-	## Move the turtle forward by the specified distance, in the direction the turtle is headed.
+	## Move the turtle forward by the specified distance, in the direction the turtle is headed. 
 	#
 	#  Add a new object (cylinder plus sphere) to the model and update the current position.
 	#
@@ -573,7 +555,7 @@ class turtle(object):
 	def forward(self,distance):
 		if distance <= 0:
 			return
-	 
+
 		self.h = distance
 		if self.down:
 			if self.rotVector is not None:
@@ -582,25 +564,25 @@ class turtle(object):
 				if self.__mode == "standard":
 					# move initial cylinder to x axis.
 					m = matrix.dot(m, matrix.rotate(90,0,1,0))
-					m = matrix.dot(matrix.translate(t[0],t[1],t[2]), m).tolist()
-					self.addNode(m)
-										 
-					if self.showAxes:
-						self.__drawAxes()
+				m = matrix.dot(matrix.translate(t[0],t[1],t[2]), m).tolist()
+				self.addNode(m)
+
+				if self.showAxes:
+					self.__drawAxes()
+			else:
+				if self.dir == 'Z':
+					self.addNode2(ang = [-90, 0, self.curAng])
 				else:
-					if self.dir == 'Z':
-						self.addNode2(ang = [-90, 0, self.curAng])
-					else:
-						self.addNode2()
-									
+					self.addNode2()
+
 		# update current position
 		self.curPoint = np.add(self.curPoint, self.h * self.heading())
-				
+
 		if turtle.__fullDebug__:
 			print("curPoint = %s" % self.position())
 		if turtle.__toDebug__:
 			print("    forward = %d -> heading = %s" % (self.h, self.heading().tolist()[:-1]))
-
+		
 
 	## Move the turtle backward by distance, opposite to the direction the turtle is headed. 
 	#  Do not change the turtle’s heading.
@@ -672,6 +654,7 @@ def stars():
 ## Draw a cube in the old way.
 def oldCube():
 	t = turtle(t=True)
+	t.setRounded(False)
 
 	t.setAxis('Y')
 	t.turnf(90)
@@ -730,6 +713,7 @@ def gear():
 def cube():
 	t = turtle()
 	t.drawAxes()
+	t.setRounded(False)
 
 	len = 25
 	# Draws base
@@ -836,6 +820,7 @@ def knot():
 	TSTEP = (TMAX - TMIN) / TSTEPS
 
 	td = turtle()
+	td.setRounded(True)
 
 	td.pensize(0.2)
 
@@ -875,14 +860,93 @@ def knot():
 	t = TMIN
 	position = pos(n,t)
 	td.penup()
-	td.setPosition(position[0], position[1], position[2])
+	td.setposition(position[0], position[1], position[2])
 	td.pendown()
 	while t <= TMAX:
 		position = pos(n,t)
-		td.setPosition(position[0], position[1], position[2])
+		td.setposition(position[0], position[1], position[2])
 		t += TSTEP
 
 	return td.getNodes()
+
+## Draw some surfaces.
+#
+#  @see http://new.math.uiuc.edu/math198/MA198-2015/nwalter2/files/project/src/turtle_scripts/surfaces.js
+#  <br>
+def surfaces():
+	XMIN = -5
+	XMAX = 5
+	YMIN = -5
+	YMAX = 5
+	XSTEPS = 20
+	YSTEPS = 20
+
+	YSTEP = (YMAX - YMIN) / YSTEPS
+	XSTEP = (XMAX - XMIN) / XSTEPS
+
+	t = turtle()
+	t.pensize(0.05)
+
+	# t.setMoveSpeed(1000)
+	# t.setTurnSpeed(1000)
+	t.reset()
+
+	## Return the surface height.
+	#
+	#  @paran n surface type (0, 1, 2, or 3).
+	#  @paran x coordinate.
+	#  @paran y coordinate.
+	#  @return z value.
+	#
+	def surface (n, x, y):
+		if n ==0:
+  			# RIPPLES
+  			return math.sin((math.pow(x, 2) + math.pow(y, 2)))
+		elif n==1:
+  			# SMOOTH RIPPLES
+  			return math.sin(math.sqrt(math.pow(x, 2) + math.pow(y, 2)))
+		elif n==2:
+  			# PYRAMID
+  			return 1-abs(x+y)-abs(y-x)
+		elif n==3:
+  			# CONE
+  			return math.pow((math.pow(x, 2) + math.pow(y, 2)), 0.5)
+
+	x = XMIN
+	y = YMIN
+	n = 0
+	increasing = True
+	t.penup()
+	t.setposition(x, y, surface(n, x, y))
+	t.pendown()
+
+	while (x <= XMAX):
+  		while (True):
+    			t.setposition(x, y, surface(n, x, y))
+    			y += YSTEP if increasing else -YSTEP
+    			if (increasing and y > YMAX or not increasing and y < YMIN):
+      				break
+  		y = YMAX if increasing else YMIN
+  		increasing = not increasing
+  		x += XSTEP
+
+	x = XMIN
+	y = YMIN
+	increasing = True
+	t.penup()
+	t.setposition(x, y, surface(n, x, y))
+	t.pendown()
+	while (y <= YMAX):
+  		while (True):
+    			t.setposition(x, y, surface(n, x, y))
+    			x += XSTEP if increasing else -XSTEP
+    			if (increasing and x > XMAX or not increasing and x < XMIN):
+      				break
+  		x = XMAX if increasing else XMIN
+  		increasing = not increasing
+  		y += YSTEP
+
+	return t.getNodes()
 
 def test():
 	t = turtle()
@@ -907,7 +971,7 @@ def main(argv=None):
 		argv = sys.argv
 
 	proc = 0
-	funcDict = {0: wireSphere, 1: star, 2: stars, 3: oldCube, 4: gear, 5: cube, 6: cube2, 7: spiral, 8: knot, 9: test}
+	funcDict = {0: wireSphere, 1: star, 2: stars, 3: oldCube, 4: gear, 5: cube, 6: cube2, 7: spiral, 8: knot, 9: test, 10: surfaces}
 
 	if len(argv) > 1:
 		try:

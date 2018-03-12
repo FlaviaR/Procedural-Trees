@@ -53,6 +53,8 @@ class LSystem():
 	#  - \ Roll left by angle a
 	#  - / Roll right by angle a
 	#  - | Turn arund (180 deg)
+	#  - > Decrement cylinder thickness by percent constant
+	#  - < Increment cylinder thickness by percent constant
 	#  - [ Push current drawing to stack
 	#  - ] Pop current drawing from stack
 	#  @param lSentence - the L-System string returned by buildLSystem
@@ -64,9 +66,11 @@ class LSystem():
 		a = 0
 		t = turtle(h=d)
 		t.setRounded(rd = self.spheres)
+		percent = 0.35
+		accumAngle = 0;
 		
 		for c in characters:
-			if (c == 'F'):
+			if (c == 'F' or c == 'f'):
 				t.forward(d)
 				a = 0
 			elif (c == '+'):
@@ -90,14 +94,19 @@ class LSystem():
 			elif (c == '|'):
 				a = 180
 				t.yaw(a)
+			elif (c == ">"):
+				t.r -= percent * t.r
+			elif (c == "<"):
+				t.r += (percent * t.r)
 			elif (c == '['):
-				tup = (t.curPoint, t.rotVector, t.rotMatrix)
+				tup = (t.curPoint, t.rotVector, t.rotMatrix, t.r)
 				stack.append(tup)
 			elif (c == ']'):
 				val = stack.pop()
-				t.setPosition(val[0][0], val[0][1], val[0][2])
+				t.setposition(val[0][0], val[0][1], val[0][2])
 				t.rotVector = val[1]
 				t.rotMatrix = val[2]
+				t.r = val[3]
 			else:
 				continue
 

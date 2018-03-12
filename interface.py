@@ -27,6 +27,10 @@ class Example(QWidget):
 			combo.addItem(key)
 		combo.activated[str].connect(self.onActivated)
 
+		options = QLabel('Options')
+
+		
+
 		own_Rules = QLabel('Make Your Own Rules')
 		self.ownAngle = QLineEdit()
 		self.ownNum = QLineEdit()
@@ -36,7 +40,7 @@ class Example(QWidget):
 		spheres = QCheckBox('Add Spheres', self)
 		spheres.stateChanged.connect(self.setSpheres)
 
-		rec = QCheckBox('Gen Recursive Trees', self)
+		rec = QCheckBox('No L-System - Recursive Tree', self)
 		rec.stateChanged.connect(self.setRec)
 
 		build = QPushButton('Build Tree!', self)

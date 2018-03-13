@@ -47,7 +47,7 @@ class BuildTree():
 		lTree = rotate(a = rot[1], v = rot[0])(lTree)
 
 		if self.base:
-			lTree = self.treeWithBase(lTree)
+			lTree = union() (lTree, self.treeWithBase())
 		
 		scad_render_to_file(lTree, file_header='$fn = %s;' % self.SEGMENTS, include_orig_code=True)
 
@@ -84,7 +84,7 @@ class BuildTree():
 	
 	## Given a union of nodes, return the union of the tree with a base
 	#  @param tree - a union of nodes that composes the tree
-	def treeWithBase(self, tree):
+	def treeWithBase(self):
 		base = cylinder(r = 6, h = .75)
 		base.add_param('$fn', 40)
 		

@@ -107,7 +107,7 @@ class Rules():
 		a = 20
 		s = "A"
 		i = 10
-		r = {"A":"[B]////[B]////[B]", "B":"&>FFFA"}
+		r = {"A":"[B]////[B]////[B]", "B":"F&>FFFA"}
 		return lSystemObj.LSysObj(a, s, i, r)
 
 	def birdNest3D(self):

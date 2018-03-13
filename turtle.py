@@ -146,7 +146,7 @@ class turtle(object):
 		self.showAxes = False
 
 	def setDebug(self, state):
-		self.__toDebug__ = state
+		turtle.__toDebug__ = state
 	
 	## Delete the turtle’s drawings from the screen, 
 	#  re-center the turtle and set variables to the default values.
@@ -956,7 +956,7 @@ def test():
 
 	t.drawAxes()
 	
-	if True:
+	if False:
 		t.forward(10)
 		t.turn(90)
 		t.forward(10)

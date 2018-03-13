@@ -32,25 +32,55 @@ class BuildTree():
 		self.lSys = LSystem()
 		self.rules = Rules()
 		self.base = False
+		self.axis = "+X"
 
-	def draw(self, rec = False, rule = None, addBase = False):
+	## Draws a tree in the orientation defined by the axis class variable.
+	#  The tree can be either purely recursive or use l-system rules. A Base can be added to the model.
+	def draw(self, rec = False, rule = None):
 		if rec:
-			lTree = self.recTree.genTree()
-		elif not rec and rule is not None:
+			# Rotate the tree that is built on the Z axis by the default to alignn to the X axis
+			lTree = rotate(a = 90, v = [0,1,0])(self.recTree.genTree())
+		if not rec and rule is not None:
 			lTree = self.lSys.lSystem(rule.iterations, rule.sentence, rule.angle, 4, rule.rules)
-		if addBase:
+
+		rot = self.fetchRot()
+		lTree = rotate(a = rot[1], v = rot[0])(lTree)
+
+		if self.base:
 			lTree = self.treeWithBase(lTree)
 		
 		scad_render_to_file(lTree, file_header='$fn = %s;' % self.SEGMENTS, include_orig_code=True)
 
+	## Defines whether to add a base to the tree model or not.
 	def useBase(self, state):
+		print (state)
 		self.base = state
 
+	## Defines whether to print out the debugging log or not.
 	def printDebug(self, state):
 		self.lSys.printDebug(state)
 	
+	## Defines whether to add spheres between cylinder connections or not.
 	def useSpheres(self, state):
 		self.lSys.useSpheres(state)
+	
+	## Returns a tupple containing the rotation axis and angle for the tree as well as the ones for the base
+	#  Structure (Rot axis for tree, Rot angle for tree, Rot axis for base, Rot angle for base)
+	def fetchRot(self):
+		if self.axis == "+X":
+			return ([1, 0, 0], 0, [0, 1, 0], 90)
+		elif self.axis == "+Y":
+			return ([0, 0, 1], 90, [1, 0, 0], 90)
+		elif self.axis == "+Z":
+			return ([0, 1, 0], -90, [0, 0, 1], 0)
+		elif self.axis == "-X":
+			return ([0, 1, 0], 180, [0, 1, 0], -90)
+		elif self.axis == "-Y":
+			return ([0, 0, 1], -90, [1, 0, 0], -90)
+		elif self.axis == "-Z":
+			return ([0, 1, 0], 90, [0, 1, 0], 180)
+
+
 	
 	## Given a union of nodes, return the union of the tree with a base
 	#  @param tree - a union of nodes that composes the tree
@@ -64,11 +94,12 @@ class BuildTree():
 		trunk2 = cylinder(r1 = 2, r2 = 0, h = 4)
 		trunk2.add_param('$fn', 5)
 		
+		rot = self.fetchRot()
 		return union()(
-					   base,
-					   trunk1,
-					   trunk2,
-					   tree,
+					   rotate(a = rot[3], v = rot[2])
+					   (base,
+						#trunk1,
+					   trunk2)
 					   )
 
 if __name__ == '__main__':

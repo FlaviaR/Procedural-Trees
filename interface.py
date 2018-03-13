@@ -11,10 +11,8 @@ class Example(QWidget):
 		super().__init__()
 		self.treeBuilder = BuildTree()
 		self.buildRec = False
-		self.addSphere = False
-		self.addBase = False
-		self.addDebug = False
 		self.ruleDict = self.treeBuilder.rules.fetchRules()
+		self.axisList = ["Orientation", "+X", "+Y", "+Z", "-X", "-Y", "-Z"]
 		self.func = self.treeBuilder.rules.kochCurve1()
 		self.initUI()
 		
@@ -30,6 +28,10 @@ class Example(QWidget):
 		combo.activated[str].connect(self.onActivated)
 
 		options = QLabel('---------------Options---------------')
+		orientation = QComboBox(self)
+		for axis in self.axisList:
+			orientation.addItem(axis)
+		orientation.activated[str].connect(self.onActivatedOri)
 		spheres = QCheckBox('Add Spheres', self)
 		spheres.stateChanged.connect(self.setSpheres)
 		base = QCheckBox('Add Base To Model', self)
@@ -58,18 +60,19 @@ class Example(QWidget):
 		grid.addWidget(combo, 4, 1)
 
 		grid.addWidget(options, 5, 1)
-		grid.addWidget(spheres, 6, 1)
-		grid.addWidget(base, 7, 1)
-		grid.addWidget(debug, 8, 1)
-		grid.addWidget(rec, 9, 1)
+		grid.addWidget(orientation, 6, 1)
+		grid.addWidget(spheres, 7, 1)
+		grid.addWidget(base, 8, 1)
+		grid.addWidget(debug, 9, 1)
+		grid.addWidget(rec, 10, 1)
 
-		grid.addWidget(own_Rules, 10, 1)
-		grid.addWidget(self.ownAngle, 11,1)
-		grid.addWidget(self.ownNum, 12,1)
-		grid.addWidget(self.ownSentence, 13,1)
-		grid.addWidget(self.ownRules, 14,1)
+		grid.addWidget(own_Rules, 11, 1)
+		grid.addWidget(self.ownAngle, 12,1)
+		grid.addWidget(self.ownNum, 13,1)
+		grid.addWidget(self.ownSentence, 14,1)
+		grid.addWidget(self.ownRules, 15,1)
 
-		grid.addWidget(build, 15, 1)
+		grid.addWidget(build, 16, 1)
 
 
 		self.setLayout(grid)
@@ -81,6 +84,11 @@ class Example(QWidget):
 	def onActivated(self, text):
 		self.func = self.ruleDict[text]
 
+	def onActivatedOri(self, axis):
+		if (axis is not "Orientation"):
+			self.treeBuilder.axis = axis
+
+	## Allows a user to create their own tree according to their given L-System rules and parameters.
 	def buildOwnTree(self):
 		angle = self.ownAngle.text()
 		num = self.ownNum.text()
@@ -104,6 +112,8 @@ class Example(QWidget):
 				i += 2
 			return self.treeBuilder.rules.createCustomRule(angle, sentence, num, d)
 
+	## When the 'Build Tree" button is pressed, a tree model is generated according to the
+	#  selected options in the interface.
 	def on_click(self):
 		rules = self.func
 		
@@ -115,21 +125,23 @@ class Example(QWidget):
 		if self.buildOwnTree() is not None:
 			rules = self.buildOwnTree()
 		
-		self.treeBuilder.useSpheres(self.addSphere)
-		self.treeBuilder.useBase(self.addBase)
-		self.treeBuilder.printDebug(self.addDebug)
-		self.treeBuilder.draw(rule = rules, addBase = self.addBase)
+		self.treeBuilder.draw(rule = rules)
 		subprocess.call(["open", "BuildTree.scad"])
 
+	## Sets treeBuilder to add spheres in between cylinders according to the 'state' param.
 	def setSpheres(self, state):
-		self.addSphere = not self.addSphere
+		self.treeBuilder.useSpheres(state)
 
+	## Sets treeBuilder to print the debug log according to the 'state' param.
 	def setDebug(self, state):
-		self.addDebug = not self.addDebug
+		self.treeBuilder.printDebug(state)
 
+	## Sets treeBuilder to add a base to the tree model according to the 'state' param.
 	def setBase(self, state):
-		self.addBase = not self.addBase
+		self.treeBuilder.useBase(state)
 
+	## Sets the buildRec variable - if this variable is set, then the tree built will be
+	#  purely recursive and will not use the L-System rules.
 	def setRec(self, state):
 		self.buildRec = not self.buildRec
 

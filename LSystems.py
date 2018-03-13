@@ -72,6 +72,7 @@ class LSystem():
 		t = turtle(h=d)
 		t.setRounded(rd = self.spheres)
 		t.setDebug(self.debug)
+
 		percent = 0.35
 		accumAngle = 0;
 		
@@ -127,7 +128,6 @@ class LSystem():
 	#  @param rules - a dictionary containing an axiom:rule key:value pair, they're both expected to be strings
 	def lSystem(self, n, sentence, a, d, rules):
 		lSentence = self.buildLSystem(n, sentence, rules)
-		print (lSentence)
 		return self.draw(lSentence, a, d)
 
 ## Silly test that draws a bunch of cylinders.

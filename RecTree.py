@@ -64,7 +64,7 @@ class RecTree():
 	#  @param numIter - number of iterations
 	#  @param scaleFactor - branch scale factor
 	#  @param xRot - x-axis angle of rotation
-	def addBranches(self, numIter = 3, scaleFactor = 0.7, xRot = 15):
+	def addBranches(self, numIter = 5, scaleFactor = 0.7, xRot = 15):
 		# Calculate the number of new branches to be atteched to the last generated branch
 		numBranches = self.ri(3, 5)
 
@@ -104,7 +104,7 @@ class RecTree():
 		# Perform a union on all branches in the node list
 		return union()(nodes)
 
-	def genTree(self, numIter = 3, scaleFactor = .7, xRot = 15):
+	def genTree(self, numIter = 4, scaleFactor = .7, xRot = 15):
 		# attach a leaf and stem to the end of the branch
 		if numIter <= 0:
 			return self.stemAndLeaf()

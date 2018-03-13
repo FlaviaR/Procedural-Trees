@@ -33,6 +33,7 @@ class BuildTree():
 		self.rules = Rules()
 		self.base = False
 		self.axis = "+X"
+		self.diameter = 6
 
 	## Draws a tree in the orientation defined by the axis class variable.
 	#  The tree can be either purely recursive or use l-system rules. A Base can be added to the model.
@@ -85,7 +86,7 @@ class BuildTree():
 	## Given a union of nodes, return the union of the tree with a base
 	#  @param tree - a union of nodes that composes the tree
 	def treeWithBase(self):
-		base = cylinder(r = 6, h = .75)
+		base = cylinder(r = self.diameter, h = 2)
 		base.add_param('$fn', 40)
 		
 		trunk1 = cylinder(r1 = 3.5, r2 = 0, h = 2)
@@ -97,9 +98,9 @@ class BuildTree():
 		rot = self.fetchRot()
 		return union()(
 					   rotate(a = rot[3], v = rot[2])
-					   (base,
+					   (base)
 						#trunk1,
-					   trunk2)
+						#trunk2)
 					   )
 
 if __name__ == '__main__':

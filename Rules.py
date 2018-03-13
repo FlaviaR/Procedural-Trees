@@ -93,21 +93,21 @@ class Rules():
 		a = 22
 		s = "F"
 		i = 4
-		r = {"F":"FF-[&F^F^F]+[^F&F&F][^F^F&F]"}
+		r = {"F":"FF-[&F^F^F]+[^F&F&F][>^F^F&F]"}
 		return lSystemObj.LSysObj(a, s, i, r)
 	
 	def pinetree3D(self):
 		a = 37
 		s = "ffffA"
 		i = 15
-		r = {"A":"ff[&(90)TP++P++P++P++P]fAB", "P":"[^(10)fZ]", "Z":"fBZ", "B":"[^(80)[f][+(70)[f]+(100)[f]] [-(80)f]]", "T":"+(20)T"}
+		r = {"A":"ff[(90)&TP++P++P++P++P]fAB", "P":"[(10)^fZ]", "Z":"fBZ", "B":"[(80)^[f][(70)+[f](100)+[>f]] [(80)-f]]", "T":"(20)+T"}
 		return lSystemObj.LSysObj(a, s, i, r)
 
 	def skeletalTree3D(self):
 		a = 20
 		s = "A"
 		i = 10
-		r = {"A":"[B]////[B]////[B]", "B":"F&>FFFA"}
+		r = {"A":"[B]////[B]////[B]", "B":"FF&>FFFA"}
 		return lSystemObj.LSysObj(a, s, i, r)
 
 	def birdNest3D(self):

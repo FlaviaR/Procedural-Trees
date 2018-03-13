@@ -68,52 +68,75 @@ class LSystem():
 	def draw(self, lSentence, angle, d):
 		characters = list(lSentence)
 		stack = []
+		
 		a = 0
+		accumAngle = ""
+		finishedAccumAng = False
+		
 		t = turtle(h=d)
 		t.setRounded(rd = self.spheres)
 		t.setDebug(self.debug)
 
-		percent = 0.35
-		accumAngle = 0;
+		percent = 0.20
 		
 		for c in characters:
+			a = int(accumAngle) if (accumAngle is not '') else angle
+			
 			if (c == 'F' or c == 'f'):
 				t.forward(d)
 				a = 0
+
+			if (finishedAccumAng):
+				accumAngle = ""
+
+			if (c.isdigit()):
+				accumAngle = accumAngle + c
+			
+			elif (c == '('):
+				finishedAccumAng = False
+			
+			elif (c == ')'):
+				finishedAccumAng = True
+
 			elif (c == '+'):
-				a = angle
 				t.yaw(a)
+			
 			elif (c == '-'):
-				a = -angle
-				t.yaw(a)
+				t.yaw(-a)
+			
 			elif (c == '&'):
-				a = angle
 				t.pitch(a)
+			
 			elif (c == '^'):
-				a = -angle
-				t.pitch(a)
+				t.pitch(-a)
+			
 			elif (c == "\\"):
-				a = angle
 				t.roll(a)
+			
 			elif (c == '/'):
-				a = -angle
-				t.roll(a)
+				t.roll(-a)
+			
 			elif (c == '|'):
 				a = 180
 				t.yaw(a)
+			
 			elif (c == ">"):
 				t.r -= percent * t.r
+			
 			elif (c == "<"):
 				t.r += (percent * t.r)
+			
 			elif (c == '['):
 				tup = (t.curPoint, t.rotVector, t.rotMatrix, t.r)
 				stack.append(tup)
+			
 			elif (c == ']'):
 				val = stack.pop()
 				t.setposition(val[0][0], val[0][1], val[0][2])
 				t.rotVector = val[1]
 				t.rotMatrix = val[2]
 				t.r = val[3]
+
 			else:
 				continue
 

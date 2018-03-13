@@ -13,6 +13,7 @@ class Example(QWidget):
 		self.buildRec = False
 		self.ruleDict = self.treeBuilder.rules.fetchRules()
 		self.axisList = ["Orientation", "+X", "+Y", "+Z", "-X", "-Y", "-Z"]
+		self.diameterList = ["Base Diameter - Default 6", "6", "14", "22", "30", "38", "45"]
 		self.func = self.treeBuilder.rules.kochCurve1()
 		self.initUI()
 		
@@ -32,6 +33,12 @@ class Example(QWidget):
 		for axis in self.axisList:
 			orientation.addItem(axis)
 		orientation.activated[str].connect(self.onActivatedOri)
+		
+		diameter = QComboBox(self)
+		for d in self.diameterList:
+			diameter.addItem(d)
+		diameter.activated[str].connect(self.onActivatedDiameter)
+		
 		spheres = QCheckBox('Add Spheres', self)
 		spheres.stateChanged.connect(self.setSpheres)
 		base = QCheckBox('Add Base To Model', self)
@@ -52,28 +59,13 @@ class Example(QWidget):
 
 		grid = QGridLayout()
 		grid.setSpacing(10)
+		
+		interfaceComponents = [rulesTitle, rules, pre_Rules, combo, options, orientation, spheres, base, diameter, debug, rec, own_Rules, self.ownAngle, self.ownNum, self.ownSentence, self.ownRules, build]
 
-		grid.addWidget(rulesTitle, 1, 1)
-		grid.addWidget(rules, 2, 1)
-
-		grid.addWidget(pre_Rules, 3, 1)
-		grid.addWidget(combo, 4, 1)
-
-		grid.addWidget(options, 5, 1)
-		grid.addWidget(orientation, 6, 1)
-		grid.addWidget(spheres, 7, 1)
-		grid.addWidget(base, 8, 1)
-		grid.addWidget(debug, 9, 1)
-		grid.addWidget(rec, 10, 1)
-
-		grid.addWidget(own_Rules, 11, 1)
-		grid.addWidget(self.ownAngle, 12,1)
-		grid.addWidget(self.ownNum, 13,1)
-		grid.addWidget(self.ownSentence, 14,1)
-		grid.addWidget(self.ownRules, 15,1)
-
-		grid.addWidget(build, 16, 1)
-
+		i = 0
+		for component in interfaceComponents:
+			grid.addWidget(component, i, 1)
+			i += 1
 
 		self.setLayout(grid)
 		
@@ -85,8 +77,12 @@ class Example(QWidget):
 		self.func = self.ruleDict[text]
 
 	def onActivatedOri(self, axis):
-		if (axis is not "Orientation"):
+		if ("Orientation" not in axis):
 			self.treeBuilder.axis = axis
+
+	def onActivatedDiameter(self, d):
+		if (d.isdigit()):
+			self.treeBuilder.diameter = float(d)
 
 	## Allows a user to create their own tree according to their given L-System rules and parameters.
 	def buildOwnTree(self):

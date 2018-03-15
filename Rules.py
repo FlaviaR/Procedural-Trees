@@ -90,32 +90,36 @@ class Rules():
 		return lSystemObj.LSysObj(a, s, i, r)
 	
 	def seaweed3D(self):
+		c = "orange red"
 		a = 22
 		s = "F"
 		i = 4
 		r = {"F":"FF-[&F^F^F]+[^F&F&F][>^F^F&F]"}
-		return lSystemObj.LSysObj(a, s, i, r)
+		return lSystemObj.LSysObj(a, s, i, r, color=c)
 	
 	def pinetree3D(self):
+		c = "green"
 		a = 37
 		s = "ffffA"
 		i = 15
 		r = {"A":"ff[(90)&TP++P++P++P++P]fAB", "P":"[(10)^fZ]", "Z":"fBZ", "B":"[(80)^[f][(70)+[f](100)+[>f]] [(80)-f]]", "T":"(20)+T"}
-		return lSystemObj.LSysObj(a, s, i, r)
+		return lSystemObj.LSysObj(a, s, i, r, color=c)
 
 	def skeletalTree3D(self):
+		c = "brown"
 		a = 20
 		s = "A"
 		i = 10
-		r = {"A":"[B]////[B]////[B]", "B":"FF&>FFFA"}
-		return lSystemObj.LSysObj(a, s, i, r)
+		r = {"A":"[B]////[B]////[B]", "B":"FF&>FFFAL"}
+		return lSystemObj.LSysObj(a, s, i, r, color=c)
 
 	def birdNest3D(self):
+		c = "brown"
 		a = 15
 		s = "F"
 		i = 3
 		r = {"F":"[-&>G][>++&G]||F[--&<G][+&G]FF-[-F+F+F]-[^>F-F-F&<]", "G":"F[+G][-G]F[+G][-G]FG"}
-		return lSystemObj.LSysObj(a, s, i, r)
+		return lSystemObj.LSysObj(a, s, i, r, color=c)
 
 	
 	def createCustomRule (self, angle, sentence, num, dict):

@@ -65,7 +65,7 @@ class LSystem():
 	#  @param lSentence - the L-System string returned by buildLSystem
 	#  @param angle - angle of rotation
 	#  @param d - length d
-	def draw(self, lSentence, angle, d):
+	def draw(self, col, lSentence, angle, d):
 		characters = list(lSentence)
 		stack = []
 		
@@ -74,9 +74,14 @@ class LSystem():
 		finishedAccumAng = False
 		
 		t = turtle(h=d)
+		# Set whether to add spheres between cylinders
 		t.setRounded(rd = self.spheres)
+		# Set whether to print the debug log
 		t.setDebug(self.debug)
-
+		# Set a pencolor
+		if col is not "":
+			t.pencolor(col);
+		# Percentage of cylinder reduction
 		percent = 0.20
 		
 		for c in characters:
@@ -97,6 +102,9 @@ class LSystem():
 			
 			elif (c == ')'):
 				finishedAccumAng = True
+			
+			elif (c == 'L'):
+				t.addLeaf(r = 1)
 
 			elif (c == '+'):
 				t.yaw(a)
@@ -149,9 +157,10 @@ class LSystem():
 	#  @param a - angle
 	#  @param d - step distance
 	#  @param rules - a dictionary containing an axiom:rule key:value pair, they're both expected to be strings
-	def lSystem(self, n, sentence, a, d, rules):
+	def lSystem(self, col, n, sentence, a, d, rules):
+
 		lSentence = self.buildLSystem(n, sentence, rules)
-		return self.draw(lSentence, a, d)
+		return self.draw(col, lSentence, a, d)
 
 ## Silly test that draws a bunch of cylinders.
 def test(d):

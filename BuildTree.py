@@ -42,7 +42,7 @@ class BuildTree():
 			# Rotate the tree that is built on the Z axis by the default to alignn to the X axis
 			lTree = rotate(a = 90, v = [0,1,0])(self.recTree.genTree())
 		if not rec and rule is not None:
-			lTree = self.lSys.lSystem(rule.iterations, rule.sentence, rule.angle, 4, rule.rules)
+			lTree = self.lSys.lSystem(rule.color, rule.iterations, rule.sentence, rule.angle, 4, rule.rules)
 
 		rot = self.fetchRot()
 		lTree = rotate(a = rot[1], v = rot[0])(lTree)
@@ -54,7 +54,6 @@ class BuildTree():
 
 	## Defines whether to add a base to the tree model or not.
 	def useBase(self, state):
-		print (state)
 		self.base = state
 
 	## Defines whether to print out the debugging log or not.
@@ -71,13 +70,13 @@ class BuildTree():
 		if self.axis == "+X":
 			return ([1, 0, 0], 0, [0, 1, 0], 90)
 		elif self.axis == "+Y":
-			return ([0, 0, 1], 90, [1, 0, 0], 90)
+			return ([0, 0, 1], 90, [1, 0, 0], -90)
 		elif self.axis == "+Z":
 			return ([0, 1, 0], -90, [0, 0, 1], 0)
 		elif self.axis == "-X":
 			return ([0, 1, 0], 180, [0, 1, 0], -90)
 		elif self.axis == "-Y":
-			return ([0, 0, 1], -90, [1, 0, 0], -90)
+			return ([0, 0, 1], -90, [1, 0, 0], 90)
 		elif self.axis == "-Z":
 			return ([0, 1, 0], 90, [0, 1, 0], 180)
 
@@ -89,7 +88,9 @@ class BuildTree():
 		base = cylinder(r = self.diameter, h = 2)
 		base.add_param('$fn', 40)
 		
-		trunk1 = cylinder(r1 = 3.5, r2 = 0, h = 2)
+		rTrunk1 = 20 if self.diameter >= 35 else 5.5
+		hTrunk1 = 10 if self.diameter >= 35 else 5
+		trunk1 = cylinder(r1 = rTrunk1, r2 = 0, h = hTrunk1)
 		trunk1.add_param('$fn', 5)
 		
 		trunk2 = cylinder(r1 = 2, r2 = 0, h = 4)
@@ -98,9 +99,9 @@ class BuildTree():
 		rot = self.fetchRot()
 		return union()(
 					   rotate(a = rot[3], v = rot[2])
-					   (base)
-						#trunk1,
-						#trunk2)
+					   (base,
+						trunk1,
+						trunk2)
 					   )
 
 if __name__ == '__main__':

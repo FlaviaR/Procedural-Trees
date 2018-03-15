@@ -13,7 +13,7 @@ class Example(QWidget):
 		self.buildRec = False
 		self.ruleDict = self.treeBuilder.rules.fetchRules()
 		self.axisList = ["Orientation", "+X", "+Y", "+Z", "-X", "-Y", "-Z"]
-		self.diameterList = ["Base Diameter - Default 6", "6", "14", "22", "30", "38", "45"]
+		self.diameterList = ["Base Diameter - Default 6", "6", "20", "35", "45", "60", "75"]
 		self.func = self.treeBuilder.rules.kochCurve1()
 		self.initUI()
 		

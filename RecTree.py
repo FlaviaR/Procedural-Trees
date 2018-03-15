@@ -64,7 +64,7 @@ class RecTree():
 	#  @param numIter - number of iterations
 	#  @param scaleFactor - branch scale factor
 	#  @param xRot - x-axis angle of rotation
-	def addBranches(self, numIter = 5, scaleFactor = 0.7, xRot = 15):
+	def addBranches(self, numIter = 6, scaleFactor = 0.7, xRot = 15):
 		# Calculate the number of new branches to be atteched to the last generated branch
 		numBranches = self.ri(3, 5)
 

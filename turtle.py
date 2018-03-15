@@ -523,7 +523,31 @@ class turtle(object):
 					)
 				)
 			)
-			
+
+	def addLeaf(self, ang=None, axis=None, c=colors["pastel pink"], r=None):
+		if ang is None:
+			ang = self.curAng
+		if axis is None:
+			axis = self.axis
+		if c is None:
+			c = self.color
+		if r is None:
+			r = self.r
+		
+		pos = self.position()
+		pos[1] += 1
+		
+		self.nodes.append(
+			(translate(pos))
+				(rotate(a = ang, v = axis)
+					(color(c)
+						(sphere(r))
+					)
+				)
+		)
+
+
+
 	## Draw the intrisic coordinate axes.
 	def __drawAxes(self):
 			r = self.r/8

@@ -25,6 +25,7 @@
 # @see http://www.openscad.org/
 # @see https://github.com/SolidCode/SolidPython
 #
+# @author Flavia Cavalcanti
 # @since 22/02/2018
 #
 
@@ -145,9 +146,10 @@ class turtle(object):
 		## Whether coordinate axes should be drawn.
 		self.showAxes = False
 
-	def setDebug(self, state):
-		turtle.__toDebug__ = state
-	
+	## Turn debugging on or off.
+	def setDebug(self, state=True):
+		self.__toDebug__ = state
+
 	## Delete the turtle’s drawings from the screen, 
 	#  re-center the turtle and set variables to the default values.
 	#
@@ -179,7 +181,7 @@ class turtle(object):
 	#  - Mode “standard” is compatible with old turtle. 
 	#  - Mode “logo” is compatible with most Logo turtle graphics. 
 	#  - Mode “world” uses user-defined “world coordinates”. <br>
-	#    Attention: in this mode angles appear distorted if x/y unit-ratio doesn’t equal 1.
+	#    Attention: in this mode angles appear distorted if x/y unit-ratio doesn't equal 1.
 	#  @param mode   Turtle Mode 
 	#  <PRE>
 	#       Mode             Initial turtle heading     positive angles
@@ -524,6 +526,7 @@ class turtle(object):
 				)
 			)
 
+	## Add a leaf node.
 	def addLeaf(self, ang=None, axis=None, c=colors["pastel pink"], r=None):
 		if ang is None:
 			ang = self.curAng
@@ -545,8 +548,6 @@ class turtle(object):
 					)
 				)
 		)
-
-
 
 	## Draw the intrisic coordinate axes.
 	def __drawAxes(self):
@@ -975,12 +976,71 @@ def surfaces():
 
 	return t.getNodes()
 
+## Draw a fractal tree.
+#  @see https://rosettacode.org/wiki/Fractal_tree#BBC_BASIC
+#  <br>
+def tree():
+	Spread = 25
+	Scale = 0.76
+	SizeX = 40
+	SizeY = 30
+	Depth = 10
+	Radius = 10
+
+	t = turtle() 
+	t.pensize(Depth/Radius)
+	t.penup()
+	t.setposition(SizeX,0,0)
+	t.pendown()
+
+	#  Draw a stem of the tree at a given position and orientation.
+	#
+	#  @param x1 x coordinate of stem position.
+	#  @param y1 y coordinate of stem position.
+	#  @param size length of the stem.
+	#  @param angle rotation angle measured from the x axis.
+	#  @param depth recursion level.
+	#
+	def procBranch(x1, y1, size, angle, depth):
+		t.pensize(depth/Radius)
+		if depth == 1:
+			t.pencolor("Green")
+		elif depth == 2:
+			t.pencolor("pastel pink")
+		else:
+			t.pencolor("Brown")
+		if False:
+			a = np.deg2rad(angle)
+			x2 = x1 + size * math.cos(a)
+			y2 = y1 + size * math.sin(a)
+			t.penup()
+			t.setposition(x1, y1, 0)
+			t.pendown()
+			t.setposition(x2, y2, 0)
+		else:
+			# angle is an absolute value measured from (zero at) the home position
+			# and turn is relative to the previous angle
+			t.home()
+			t.penup()
+			t.setposition(x1, y1, 0)
+			t.pendown()
+			t.turn(angle)
+			t.forward(size)
+			x2, y2, z2 = t.position()
+
+		if depth > 0:
+			procBranch(x2, y2, size * Scale, angle - Spread, depth - 1)
+			procBranch(x2, y2, size * Scale, angle + Spread, depth - 1)
+
+	procBranch(SizeX, 0, SizeY*0.5, 90, Depth)
+	return t.getNodes()
+
 def test():
 	t = turtle()
 
 	t.drawAxes()
 	
-	if False:
+	if True:
 		t.forward(10)
 		t.turn(90)
 		t.forward(10)
@@ -998,7 +1058,7 @@ def main(argv=None):
 		argv = sys.argv
 
 	proc = 0
-	funcDict = {0: wireSphere, 1: star, 2: stars, 3: oldCube, 4: gear, 5: cube, 6: cube2, 7: spiral, 8: knot, 9: test, 10: surfaces}
+	funcDict = {0: wireSphere, 1: star, 2: stars, 3: oldCube, 4: gear, 5: cube, 6: cube2, 7: spiral, 8: knot, 9: test, 10: surfaces, 11: tree}
 
 	if len(argv) > 1:
 		try:

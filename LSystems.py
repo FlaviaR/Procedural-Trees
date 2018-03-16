@@ -1,3 +1,15 @@
+#! /usr/bin/env python
+# -*- coding: UTF-8 -*-
+#
+## @package Tree
+#
+# Draws the resulting model based on the received LSystem rule.  
+# See the draw function for more information regarding the character interpretations. 
+#
+# @author Flavia Cavalcanti
+# @since 22/02/2018
+#
+
 import matrix
 import numpy as np
 # Assumes SolidPython is in site-packages or elsewhwere in sys.path

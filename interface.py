@@ -1,3 +1,13 @@
+#! /usr/bin/env python
+# -*- coding: UTF-8 -*-
+#
+## @package Tree
+# Interface to control the user inputs to generate the recursive models. 
+#
+# @author Flavia Cavalcanti
+# @since 22/02/2018
+#
+
 import sys
 import subprocess
 from BuildTree import BuildTree
@@ -91,9 +101,10 @@ class Example(QWidget):
 		sentence = self.ownSentence.text()
 		rules = self.ownRules.text()
 		
-		if (angle is '' or num is '' or sentence is '' or rules is ''):
+		if (not angle):
 			return None
 		else:
+
 			angle = float(angle)
 			num = int(num)
 

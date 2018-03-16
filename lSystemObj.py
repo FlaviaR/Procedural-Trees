@@ -1,3 +1,15 @@
+#! /usr/bin/env python
+# -*- coding: UTF-8 -*-
+#
+## @package Tree
+#
+# An LSysObj is a container to keep track of individual rule information including the
+# angle, recursion depth, base sentence, model color, and substitution rules. 
+#
+# @author Flavia Cavalcanti
+# @since 22/02/2018
+#
+
 class LSysObj:
 
 	angle = 0.0

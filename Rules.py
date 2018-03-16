@@ -1,3 +1,15 @@
+#! /usr/bin/env python
+# -*- coding: UTF-8 -*-
+#
+## @package Tree
+#
+# A series of rules to be used in the LSystem.
+# Each rule returns an LSystem object containing an angle, a recursion depth, a base sentence, and a list of substitution rules.  
+#
+# @author Flavia Cavalcanti
+# @since 22/02/2018
+#
+
 import lSystemObj
 
 ## Rules taken or modified from:

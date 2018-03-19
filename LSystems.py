@@ -152,7 +152,9 @@ class LSystem():
 			
 			elif (c == ']'):
 				val = stack.pop()
+				t.penup()
 				t.setposition(val[0][0], val[0][1], val[0][2])
+				t.pendown()
 				t.rotVector = val[1]
 				t.rotMatrix = val[2]
 				t.r = val[3]

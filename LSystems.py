@@ -50,19 +50,27 @@ class LSystem():
 	#  @return the resulting L-System based off of the given axioms and rules
 	def buildLSystem(self, n, sentence, rules):
 		next = ""
-		prob = 1
 		stochastic = self.stochastic
 		
-		if stochastic:
-			prob = 1/len(rules) if len(rules) > 1 else 0.45
 		if (n > 0):
 			characters = list(sentence)
 			
 			for c in characters:
 				if (c in rules):
-					if (stochastic): rand = random.random()
-					if ((stochastic and rand <= prob) or not stochastic):
-							next += self.buildLSystem(n-1, rules[c], rules)
+					if (not stochastic):
+						next += self.buildLSystem(n-1, rules[c], rules)
+					elif (stochastic):
+
+						rule = rules[c]
+						half = int(len(rule)/2)
+						ruleH1 = rule[0:half + 1]
+						ruleH2 = rule[(half):]
+
+						sel = random.randint(0, 2)
+						arr = [rule, ruleH1, ruleH2]
+						selectedRule = arr[sel]
+
+						next += self.buildLSystem(n-1, selectedRule, rules)
 					else:
 						next += self.buildLSystem(n-1, sentence, rules)
 				else:

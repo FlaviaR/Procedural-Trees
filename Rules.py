@@ -44,12 +44,13 @@ class Rules():
 
 	def hilbert3D(self):
 		a = 90
-		s = "A"
-		i = 2
-		r = {'A':"B-F+CFC+F-D&F∧D-F+&&CFC+F+B//",\
-			'B':"A&F∧CFB∧F∧D∧∧-F-D∧|F∧B|FC∧F∧A//",\
-			'C':"|D∧|F∧B-F+C∧F∧A&&FA&F∧C+F+B∧F∧D//",\
-			'D':"|CFB-F+B|FA&F∧A&&FB-F+B|FC//"}
+		s = "X"
+		i = 5
+		r = {'X':"-F^//XFX&F+//XFX-F/X-/"}
+			#r = {'A':"B-F+CFC+F-D&F∧D-F+&&CFC+F+B//",\
+			#'B':"A&F∧CFB∧F∧D∧∧-F-D∧|F∧B|FC∧F∧A//",\
+			#'C':"|D∧|F∧B-F+C∧F∧A&&FA&F∧C+F+B∧F∧D//",\
+			#'D':"|CFB-F+B|FA&F∧A&&FB-F+B|FC//"}
 		return lSystemObj.LSysObj(a, s, i, r)
 
 	def TwoDTree1(self):

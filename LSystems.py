@@ -12,6 +12,7 @@
 
 import matrix
 import numpy as np
+import random
 # Assumes SolidPython is in site-packages or elsewhwere in sys.path
 from solid import *
 from solid.utils import *
@@ -20,12 +21,16 @@ from turtle import turtle
 class LSystem():
 	
 	def __init__(self):
+		self.stochastic = False
 		self.spheres = False
 		self.debug = False
 		self.turtle = turtle()
 	
 	def printDebug(self, state):
 		self.debug = state
+	
+	def useStochastic(self, state):
+		self.stochastic = state
 	
 	def useSpheres(self, state):
 		self.spheres = state
@@ -45,12 +50,21 @@ class LSystem():
 	#  @return the resulting L-System based off of the given axioms and rules
 	def buildLSystem(self, n, sentence, rules):
 		next = ""
+		prob = 1
+		stochastic = self.stochastic
+		
+		if stochastic:
+			prob = 1/len(rules) if len(rules) > 1 else 0.45
 		if (n > 0):
 			characters = list(sentence)
 			
 			for c in characters:
 				if (c in rules):
-					next += self.buildLSystem(n-1, rules[c], rules);
+					if (stochastic): rand = random.random()
+					if ((stochastic and rand <= prob) or not stochastic):
+							next += self.buildLSystem(n-1, rules[c], rules)
+					else:
+						next += self.buildLSystem(n-1, sentence, rules)
 				else:
 					next += c
 		else:

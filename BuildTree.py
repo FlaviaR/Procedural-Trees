@@ -52,6 +52,10 @@ class BuildTree():
 		
 		scad_render_to_file(lTree, file_header='$fn = %s;' % self.SEGMENTS, include_orig_code=True)
 
+	## Defines whether to apply a stochastic interpretation of the rules  to the tree model or not.
+	def useStochastic(self, state):
+		self.lSys.useStochastic(state)
+	
 	## Defines whether to add a base to the tree model or not.
 	def useBase(self, state):
 		self.base = state

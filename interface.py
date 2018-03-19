@@ -39,6 +39,10 @@ class Example(QWidget):
 		combo.activated[str].connect(self.onActivated)
 
 		options = QLabel('---------------Options---------------')
+		
+		stochastic = QCheckBox('Stochastic L-Systems', self)
+		stochastic.stateChanged.connect(self.setStochastic)
+		
 		orientation = QComboBox(self)
 		for axis in self.axisList:
 			orientation.addItem(axis)
@@ -70,7 +74,7 @@ class Example(QWidget):
 		grid = QGridLayout()
 		grid.setSpacing(10)
 		
-		interfaceComponents = [rulesTitle, rules, pre_Rules, combo, options, orientation, spheres, base, diameter, debug, rec, own_Rules, self.ownAngle, self.ownNum, self.ownSentence, self.ownRules, build]
+		interfaceComponents = [rulesTitle, rules, pre_Rules, combo, options, stochastic, orientation, spheres, base, diameter, debug, rec, own_Rules, self.ownAngle, self.ownNum, self.ownSentence, self.ownRules, build]
 
 		i = 0
 		for component in interfaceComponents:
@@ -135,6 +139,9 @@ class Example(QWidget):
 		self.treeBuilder.draw(rule = rules)
 		subprocess.call(["open", "BuildTree.scad"])
 
+	def setStochastic(self, state):
+		self.treeBuilder.useStochastic(state)
+	
 	## Sets treeBuilder to add spheres in between cylinders according to the 'state' param.
 	def setSpheres(self, state):
 		self.treeBuilder.useSpheres(state)

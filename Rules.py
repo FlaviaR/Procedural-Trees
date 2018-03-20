@@ -88,7 +88,7 @@ class Rules():
 		s = "X"
 		i = 7
 		r = {'X':"F[+X]F[-X]+X", 'F':"FF"}
-		rs = {'X':["F[+X]F[-X]+X", "F[+X]F", "F[-X]+X"], 'F':["FF", "F", "F"]}
+		rs = {'X':["F[+X]F[-X]+X", "F[+X]F[+X]", "[+X]F[-X]+X"], 'F':["FF"]}
 		return lSystemObj.LSysObj(a, s, i, r, rs)
 
 	def fractalPlant2(self):
@@ -96,7 +96,7 @@ class Rules():
 		s = "X"
 		i = 7
 		r = {'X':"F[+X][-X]FX", 'F':"FF"}
-		rs = {'X':["F[+X][-X]FX", "F[+X]", "[-X]FX"], 'F':["FF", "F", "F"]}
+		rs = {'X':["F[+X][-X]FX", "F[+X][-X]", "[+X][-X]FX"], 'F':["FF"]}
 		return lSystemObj.LSysObj(a, s, i, r, rs)
 
 	def fractalPlant3(self):
@@ -104,7 +104,7 @@ class Rules():
 		s = "X"
 		i = 5
 		r = {'X':"F-[[X]+X]+F[+FX]-X", 'F':"FF"}
-		rs = {'X':["F-[[X]+X]+F[+FX]-X", "F-[[X]+X]", "+F[+FX]-X"],'F':["FF", "F", "F"]}
+		rs = {'X':["F-[[X]+X]+F[+FX]-X", "F-[[X]+X]", "[[X]+X]+F[+FX]-X"],'F':["FF"]}
 		return lSystemObj.LSysObj(a, s, i, r, rs)
 
 	def ugly3DTree(self):
@@ -115,7 +115,7 @@ class Rules():
 		rs = {'A':["&FFB\\B\\\\\B", "&FFB\\", "B\\\\\B"], 'B':["[&&FF\\\\\\A]"]}
 		return lSystemObj.LSysObj(a, s, i, r, rs)
 	
-	def seaweed3D(self):
+	def coral3D(self):
 		c = "orange red"
 		a = 22
 		s = "F"
@@ -130,7 +130,7 @@ class Rules():
 		s = "ffffA"
 		i = 15
 		r = {"A":"ff[(90)&TP++P++P++P++P]fAB", "P":"[(10)^fZ]", "Z":"fBZ", "B":"[(80)^[f][(70)+[f](100)+[>f]] [(80)-f]]", "T":"(20)+T"}
-		rs = {}
+		rs = {"A":["ff[(90)&TP++P++P++P++P]fAB", "f[(90)&TP++P++P++P++P]fAB", "f[(90)&TP++P++P++P++P]fA"], "P":["[(10)^fZ]"], "Z":["fBZ"], "B":["[(80)^[f][(70)+[f](100)+[>f]] [(80)-f]]", "[[(70)+[f](100)+[>f]] [(80)-f]]", "[[(70)+[f](100)+]]"], "T":["(20)+T"]}
 		return lSystemObj.LSysObj(a, s, i, r, rs, color=c)
 
 	def skeletalTree3D(self):
@@ -139,7 +139,7 @@ class Rules():
 		s = "A"
 		i = 10
 		r = {"A":"[B]////[B]////[B]", "B":"FF&>FFFAL"}
-		rs = {"A":["[B]////[B]////[B]","[B]////","[B]////[B]"], "B":["FF&>FFFAL", "FF&>FFFA", "F&>FFFAL"]}
+		rs = {"A":["[B]////[B]////[B]","[B]////[B]","[B]////[B]"], "B":["FF&>FFFAL", "FF&>FFFA", "F&>FFFAL"]}
 		return lSystemObj.LSysObj(a, s, i, r, rs, color=c)
 
 	def birdNest3D(self):
@@ -148,7 +148,7 @@ class Rules():
 		s = "F"
 		i = 3
 		r = {"F":"[-&>G][>++&G]||F[--&<G][+&G]FF-[-F+F+F]-[^>F-F-F&<]", "G":"F[+G][-G]F[+G][-G]FG"}
-		rs = {}
+		rs = {"F":["[-&>G][>++&G]||F[--&<G][+&G]FF-[-F+F+F]-[^>F-F-F&<]", "[-&>G][>++&G]||F[--&<G][+&G]FF-[-F+F+F]-", "[-&>G]||F[--&<G][+&G]FF-[-F][^>F-F-F&<]"], "G":["F[+G][-G]F[+G][-G]FG", "F[-G]F[+G][-G]FG", "F[+G][-G]F[+G][-G]G"]}
 		return lSystemObj.LSysObj(a, s, i, r, rs, color=c)
 
 	
@@ -160,4 +160,4 @@ class Rules():
 		return lSystemObj.LSysObj(a, s, i, r, rs)
 
 	def fetchRules(self):
-		return {"kochCurve1":self.kochCurve1(), "kochCurve2":self.kochCurve2(), "kochCurve3":self.kochCurve3(), "hilbert3D":self.hilbert3D(), "TwoDTree1":self.TwoDTree1(), "TwoDTree2":self.TwoDTree2(), "TwoDTree3":self.TwoDTree3(), "fractalPlant1":self.fractalPlant1(), "fractalPlant2":self.fractalPlant2(), "fractalPlant3":self.fractalPlant3(), "Tree With Arthritis":self.ugly3DTree(), "3D Seaweed" : self.seaweed3D(), "3D Pine Tree":self.pinetree3D(), "3D Skeletal Tree":self.skeletalTree3D(), "3D Birds Nest":self.birdNest3D()}
+		return {"kochCurve1":self.kochCurve1(), "kochCurve2":self.kochCurve2(), "kochCurve3":self.kochCurve3(), "hilbert3D":self.hilbert3D(), "TwoDTree1":self.TwoDTree1(), "TwoDTree2":self.TwoDTree2(), "TwoDTree3":self.TwoDTree3(), "fractalPlant1":self.fractalPlant1(), "fractalPlant2":self.fractalPlant2(), "fractalPlant3":self.fractalPlant3(), "Tree With Arthritis":self.ugly3DTree(), "3D Coralreef" : self.coral3D(), "3D Pine Tree":self.pinetree3D(), "3D Skeletal Tree":self.skeletalTree3D(), "3D Birds Nest":self.birdNest3D()}

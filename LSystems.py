@@ -179,7 +179,6 @@ class LSystem():
 
 			else:
 				continue
-
 		return t.getNodes()
 
 

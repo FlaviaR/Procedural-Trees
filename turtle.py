@@ -40,7 +40,7 @@ import numpy as np
 from solid import *
 from solid.utils import *
 
-SEGMENTS = 48
+SEGMENTS = 30
 
 ## Rotate the given vector about the x axis.
 #
@@ -137,6 +137,8 @@ class turtle(object):
 	
 		## Whether pencolor has been called before.
 		self.controlColor = False
+		self.nodecount = 0
+
 
 		if not t:	
 			self.mode ("standard")
@@ -458,6 +460,7 @@ class turtle(object):
 	#  @param rd whether to create rounded cylinders.
 	#
 	def addNode(self, m, c=None, r=None, h=None, rd=None):
+		self.nodecount += 1
 		if c is None:
 			c = self.color
 		if r is None:
@@ -493,6 +496,7 @@ class turtle(object):
 	#  @param rd whether to create rounded cylinders.
 	#
 	def addNode2(self, ang=None, axis=None, c=None, r=None, h=None, rd=None):
+		self.nodecount += 1
 		if ang is None:
 			ang = self.curAng
 		if axis is None:

@@ -17,6 +17,7 @@ class LSysObj:
 	iterations = 0
 	color = ""
 	rules = {}
+	rulesStochastic = {}
 
 	## This object keeps track of the rules required to execute the L system
 	# @param color - color to be used in the model
@@ -24,7 +25,7 @@ class LSysObj:
 	# @param sentence - base sentence used to apply the rules
 	# @param iterations - number of iterations for the recursive function
 	# @param rules - dictionary of rules -> axiom:rules
-	def __init__(self, angle, sentence, iterations, rules, color=None):
+	def __init__(self, angle, sentence, iterations, rules, rulesStochastic, color=None):
 		
 		if color is not None:
 			self.color = color
@@ -32,4 +33,5 @@ class LSysObj:
 		self.sentence = sentence
 		self.iterations = iterations
 		self.rules = rules
+		self.rulesStochastic = rulesStochastic
 

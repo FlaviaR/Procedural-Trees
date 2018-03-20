@@ -42,7 +42,7 @@ class BuildTree():
 			# Rotate the tree that is built on the Z axis by the default to alignn to the X axis
 			lTree = rotate(a = 90, v = [0,1,0])(self.recTree.genTree())
 		if not rec and rule is not None:
-			lTree = self.lSys.lSystem(rule.color, rule.iterations, rule.sentence, rule.angle, 4, rule.rules)
+			lTree = self.lSys.lSystem(rule.color, rule.iterations, rule.sentence, rule.angle, 4, rule.rules, rule.rulesStochastic)
 
 		rot = self.fetchRot()
 		lTree = rotate(a = rot[1], v = rot[0])(lTree)

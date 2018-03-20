@@ -48,33 +48,29 @@ class LSystem():
 	#  @param sentence - initial sentence - base for the rule applications
 	#  @param rules - a dictionary containing an axiom:rule key:value pair, they're both expected to be strings
 	#  @return the resulting L-System based off of the given axioms and rules
-	def buildLSystem(self, n, sentence, rules):
+	def buildLSystem(self, n, sentence, rules, sRules):
 		next = ""
-		stochastic = self.stochastic
 		
 		if (n > 0):
 			characters = list(sentence)
 			
 			for c in characters:
-				if (c in rules):
-					if (not stochastic):
-						next += self.buildLSystem(n-1, rules[c], rules)
-					elif (stochastic):
-
-						rule = rules[c]
-						half = int(len(rule)/2)
-						ruleH1 = rule[0:half + 1]
-						ruleH2 = rule[(half):]
-
-						sel = random.randint(0, 2)
-						arr = [rule, ruleH1, ruleH2]
-						selectedRule = arr[sel]
-
-						next += self.buildLSystem(n-1, selectedRule, rules)
-					else:
-						next += self.buildLSystem(n-1, sentence, rules)
+				if (not self.stochastic and c in rules):
+					next += self.buildLSystem(n-1, rules[c], rules, sRules)
+				elif (self.stochastic and c in sRules):
+					arr = sRules[c]
+					#						half = int(len(rule)/2)
+					#						ruleH1 = rule[0:half + 1]
+					#						ruleH2 = rule[(half):]
+					
+					sel = random.randint(0, len(arr) - 1)
+					#						arr = [rule, ruleH1, ruleH2]
+					selectedRule = arr[sel]
+					
+					next += self.buildLSystem(n-1, selectedRule, rules, sRules)
 				else:
 					next += c
+
 		else:
 			return sentence
 		
@@ -193,9 +189,10 @@ class LSystem():
 	#  @param a - angle
 	#  @param d - step distance
 	#  @param rules - a dictionary containing an axiom:rule key:value pair, they're both expected to be strings
-	def lSystem(self, col, n, sentence, a, d, rules):
+	def lSystem(self, col, n, sentence, a, d, rules, sRules):
 
-		lSentence = self.buildLSystem(n, sentence, rules)
+		lSentence = self.buildLSystem(n, sentence, rules, sRules)
+		print (lSentence)
 		return self.draw(col, lSentence, a, d)
 
 ## Silly test that draws a bunch of cylinders.

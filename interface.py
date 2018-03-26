@@ -137,7 +137,7 @@ class Example(QWidget):
 			rules = self.buildOwnTree()
 		
 		self.treeBuilder.draw(rule = rules)
-		subprocess.call(["open", "BuildTree.scad"])
+		subprocess.call(["open", "lSystemModel" + str(self.treeBuilder.filepathCounter)+ ".scad"])
 
 	def setStochastic(self, state):
 		self.treeBuilder.useStochastic(state)

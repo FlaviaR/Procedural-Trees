@@ -139,7 +139,7 @@ class Rules():
 		s = "A"
 		i = 10
 		r = {"A":"[B]////[B]////[B]", "B":"FF&>FFFAL"}
-		rs = {"A":["[B]////[B]////[B]","[B]////[B]","[B]////[B]"], "B":["FF&>FFFAL", "FF&>FFFA", "F&>FFFAL"]}
+		rs = {"A":["[B]////[B]////[B]","[B]///[B]////[B]","/[B]////[B]"], "B":["FF&>>FFFAL", "FF&>FFFA", "F&>FFFAL"]}
 		return lSystemObj.LSysObj(a, s, i, r, rs, color=c)
 
 	def birdNest3D(self):
@@ -157,6 +157,7 @@ class Rules():
 		s = sentence
 		i = num
 		r = dict
+		rs = {}
 		return lSystemObj.LSysObj(a, s, i, r, rs)
 
 	def fetchRules(self):

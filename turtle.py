@@ -35,6 +35,7 @@ import sys
 import math
 import matrix
 import numpy as np
+import random
 
 # Assumes SolidPython is in site-packages or elsewhere in sys.path
 from solid import *
@@ -138,7 +139,8 @@ class turtle(object):
 		## Whether pencolor has been called before.
 		self.controlColor = False
 		self.nodecount = 0
-
+		## Color for the leaves
+		self.leafCol = None
 
 		if not t:	
 			self.mode ("standard")
@@ -531,24 +533,34 @@ class turtle(object):
 			)
 
 	## Add a leaf node.
-	def addLeaf(self, ang=None, axis=None, c=colors["pastel pink"], r=None):
+	def addLeaf(self, ang=None, axis=None, c=None, r=None):
 		if ang is None:
 			ang = self.curAng
 		if axis is None:
 			axis = self.axis
-		if c is None:
-			c = self.color
+		if c is None and self.leafCol is None:
+			cols = [colors["medium orchid"], colors["magenta"], colors["pastel pink"], colors["orange red"], colors["cyan"]]
+			rand = random.randint(0, len(cols) - 1)
+			c = cols[rand]
+			self.leafCol = c
+		if self.leafCol is not None:
+			c = self.leafCol
 		if r is None:
-			r = self.r
-		
-		pos = self.position()
-		pos[1] += 1
+			r = self.r - 2
+
+		flower = union()(
+						 translate([0, 0.5, 0])(sphere(r)),
+						 translate([0, -0.5, 0])(sphere(r)),
+						 translate([0, 0, 0.5])(sphere(r)),
+						 translate([0, 0, -0.5])(sphere(r))
+
+						 )
 		
 		self.nodes.append(
-			(translate(pos))
+			(translate(self.position()))
 				(rotate(a = ang, v = axis)
 					(color(c)
-						(sphere(r))
+						(flower)
 					)
 				)
 		)

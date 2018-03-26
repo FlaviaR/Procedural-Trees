@@ -34,7 +34,8 @@ class BuildTree():
 		self.base = False
 		self.axis = "+X"
 		self.diameter = 6
-
+		self.filepathCounter = 0
+	
 	## Draws a tree in the orientation defined by the axis class variable.
 	#  The tree can be either purely recursive or use l-system rules. A Base can be added to the model.
 	def draw(self, rec = False, rule = None):
@@ -50,7 +51,10 @@ class BuildTree():
 		if self.base:
 			lTree = union() (lTree, self.treeWithBase())
 		
-		scad_render_to_file(lTree, file_header='$fn = %s;' % self.SEGMENTS, include_orig_code=True)
+		self.filepathCounter += 1
+		
+		scad_render_to_file(lTree, filepath = "lSystemModel" + str(self.filepathCounter) + ".scad", file_header='$fn = %s;' % self.SEGMENTS, include_orig_code=True)
+		
 
 	## Defines whether to apply a stochastic interpretation of the rules  to the tree model or not.
 	def useStochastic(self, state):

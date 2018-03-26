@@ -92,6 +92,10 @@ class LSystem():
 	#  - < Increment cylinder thickness by percent constant
 	#  - [ Push current drawing to stack
 	#  - ] Pop current drawing from stack
+	#  - > Decrement cylinder diameter by hardcoded percentage
+	#  - < Increment cylinder diameter by hardcoded percentage
+	#  - ( ) Consider value between parenthesis for next command
+	#  - L Add "leaves"
 	#  @param lSentence - the L-System string returned by buildLSystem
 	#  @param angle - angle of rotation
 	#  @param d - length d
@@ -112,7 +116,9 @@ class LSystem():
 		if col is not "":
 			t.pencolor(col);
 		# Percentage of cylinder reduction
-		percent = 0.20
+		percentReduction = 0.20
+		# Increase cylinder height by 30%
+		cylScale = 1.3
 		
 		for c in characters:
 			a = int(accumAngle) if (accumAngle is not '') else angle
@@ -159,10 +165,13 @@ class LSystem():
 				t.yaw(a)
 			
 			elif (c == ">"):
-				t.r -= percent * t.r
+				t.r -= percentReduction * t.r
 			
 			elif (c == "<"):
-				t.r += (percent * t.r)
+				t.r += (percentReduction * t.r)
+			
+			elif (c == '"'):
+				t.h += (cylScale * t.h)
 			
 			elif (c == '['):
 				tup = (t.curPoint, t.rotVector, t.rotMatrix, t.r)
@@ -191,7 +200,6 @@ class LSystem():
 	def lSystem(self, col, n, sentence, a, d, rules, sRules):
 
 		lSentence = self.buildLSystem(n, sentence, rules, sRules)
-		print (lSentence)
 		return self.draw(col, lSentence, a, d)
 
 ## Silly test that draws a bunch of cylinders.

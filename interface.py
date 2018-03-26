@@ -32,7 +32,7 @@ class Example(QWidget):
 		rulesTitle = QLabel('----------L-System Rules-----------')
 		rules = QLabel("F - Move forward a step of length d\n+ - Turn left by angle a\n- - Turn right by angle a\n& - Pitch down by angle a\n^ - Pitch up by angle a\n\ - Roll left by angle a\n/ - Roll right by angle a\n| - Turn arund (180 deg)\n[ - Push current drawing to stack\n] - Pop current drawing from stack")
 
-		pre_Rules = QLabel('----------Pre-made Rules----------')
+		pre_Rules = QLabel('----------Pre-made Rules-----------')
 		combo = QComboBox(self)
 		for key in self.ruleDict:
 			combo.addItem(key)
@@ -67,6 +67,7 @@ class Example(QWidget):
 		self.ownNum = QLineEdit()
 		self.ownSentence = QLineEdit()
 		self.ownRules = QLineEdit()
+		closeLabel = QLabel('---------------------------------------')
 
 		build = QPushButton('Build Tree!', self)
 		build.clicked.connect(self.on_click)
@@ -74,7 +75,7 @@ class Example(QWidget):
 		grid = QGridLayout()
 		grid.setSpacing(10)
 		
-		interfaceComponents = [rulesTitle, rules, pre_Rules, combo, options, stochastic, orientation, spheres, base, diameter, debug, rec, own_Rules, self.ownAngle, self.ownNum, self.ownSentence, self.ownRules, build]
+		interfaceComponents = [rulesTitle, rules, pre_Rules, combo, options, stochastic, orientation, spheres, base, diameter, debug, rec, own_Rules, self.ownAngle, self.ownNum, self.ownSentence, self.ownRules, closeLabel, build]
 
 		i = 0
 		for component in interfaceComponents:
@@ -130,12 +131,12 @@ class Example(QWidget):
 		
 		if self.buildRec:
 			self.treeBuilder.draw(rec = True)
-			subprocess.call(["open", "BuildTree.scad"])
+			subprocess.call(["open", "lSystemModel" + str(self.treeBuilder.filepathCounter)+ ".scad"])
 			return
 		
 		if self.buildOwnTree() is not None:
 			rules = self.buildOwnTree()
-		
+
 		self.treeBuilder.draw(rule = rules)
 		subprocess.call(["open", "lSystemModel" + str(self.treeBuilder.filepathCounter)+ ".scad"])
 

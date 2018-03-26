@@ -83,7 +83,7 @@ class Rules():
 
 		return lSystemObj.LSysObj(a, s, i, r, rs)
 
-	def fractalPlant1(self):
+	def TwoDTree4(self):
 		a = 20
 		s = "X"
 		i = 7
@@ -91,7 +91,7 @@ class Rules():
 		rs = {'X':["F[+X]F[-X]+X", "F[+X]F[+X]", "[+X]F[-X]+X"], 'F':["FF"]}
 		return lSystemObj.LSysObj(a, s, i, r, rs)
 
-	def fractalPlant2(self):
+	def TwoDTree5(self):
 		a = 25.7
 		s = "X"
 		i = 7
@@ -99,7 +99,7 @@ class Rules():
 		rs = {'X':["F[+X][-X]FX", "F[+X][-X]", "[+X][-X]FX"], 'F':["FF"]}
 		return lSystemObj.LSysObj(a, s, i, r, rs)
 
-	def fractalPlant3(self):
+	def TwoDTree6(self):
 		a = 22.5
 		s = "X"
 		i = 5
@@ -121,7 +121,7 @@ class Rules():
 		s = "F"
 		i = 4
 		r = {"F":"FF-[&F^F^F]+[^F&F&F][>^F^F&F]"}
-		rs = {'F':["FF-[&F^F^F]+[^F&F&F][>^F^F&F]", "FF-[&F^F^F]+", "[^F&F&F][>^F^F&F]"]}
+		rs = {'F':["FF-[&F^F^F]+[^F&F&F][>^F^F&F]", "FF-[&F^F^F]+", "F-[&F^F^F]+[^F&F&F][>^F^F&F]"]}
 		return lSystemObj.LSysObj(a, s, i, r, rs, color=c)
 	
 	def pinetree3D(self):
@@ -161,4 +161,4 @@ class Rules():
 		return lSystemObj.LSysObj(a, s, i, r, rs)
 
 	def fetchRules(self):
-		return {"kochCurve1":self.kochCurve1(), "kochCurve2":self.kochCurve2(), "kochCurve3":self.kochCurve3(), "hilbert3D":self.hilbert3D(), "TwoDTree1":self.TwoDTree1(), "TwoDTree2":self.TwoDTree2(), "TwoDTree3":self.TwoDTree3(), "fractalPlant1":self.fractalPlant1(), "fractalPlant2":self.fractalPlant2(), "fractalPlant3":self.fractalPlant3(), "Tree With Arthritis":self.ugly3DTree(), "3D Coralreef" : self.coral3D(), "3D Pine Tree":self.pinetree3D(), "3D Skeletal Tree":self.skeletalTree3D(), "3D Birds Nest":self.birdNest3D()}
+		return {"kochCurve1":self.kochCurve1(), "kochCurve2":self.kochCurve2(), "kochCurve3":self.kochCurve3(), "hilbert3D":self.hilbert3D(), "TwoDTree1":self.TwoDTree1(), "TwoDTree2":self.TwoDTree2(), "TwoDTree3":self.TwoDTree3(), "TwoDTree4":self.TwoDTree4(), "TwoDTree5":self.TwoDTree5(), "TwoDTree6":self.TwoDTree6(), "Tree With Arthritis":self.ugly3DTree(), "3D Coralreef" : self.coral3D(), "3D Pine Tree":self.pinetree3D(), "3D Skeletal Tree":self.skeletalTree3D(), "3D Birds Nest":self.birdNest3D()}

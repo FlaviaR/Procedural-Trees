@@ -198,7 +198,16 @@ class LSystem():
 	#  @param d - step distance
 	#  @param rules - a dictionary containing an axiom:rule key:value pair, they're both expected to be strings
 	def lSystem(self, col, n, sentence, a, d, rules, sRules):
+		print("Selected rule:")
+		print("Angle: " + str(a))
+		print("Depth: " + str(n))
+		print("Base Sentence: " + sentence)
 
+		if (self.stochastic):
+			print(sRules)
+		else:
+			print(rules)
+		print ("")
 		lSentence = self.buildLSystem(n, sentence, rules, sRules)
 		return self.draw(col, lSentence, a, d)
 

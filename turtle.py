@@ -151,8 +151,8 @@ class turtle(object):
 		self.showAxes = False
 
 	## Turn debugging on or off.
-	def setDebug(self, state=True):
-		self.__toDebug__ = state
+	def setDebug(self, state=False):
+		turtle.__toDebug__ = state
 
 	## Delete the turtle’s drawings from the screen, 
 	#  re-center the turtle and set variables to the default values.
@@ -532,21 +532,24 @@ class turtle(object):
 				)
 			)
 
-	## Add a leaf node.
-	def addLeaf(self, ang=None, axis=None, c=None, r=None):
-		if ang is None:
-			ang = self.curAng
-		if axis is None:
-			axis = self.axis
+	## Add a flower node.
+	def addLeaf(self, c=None, r=None):
 		if c is None and self.leafCol is None:
 			cols = [colors["medium orchid"], colors["magenta"], colors["pastel pink"], colors["orange red"], colors["cyan"]]
 			rand = random.randint(0, len(cols) - 1)
 			c = cols[rand]
 			self.leafCol = c
+		
 		if self.leafCol is not None:
 			c = self.leafCol
+		
 		if r is None:
-			r = self.r - 2
+			r = self.r - 3
+		
+		t = self.position()
+		m = self.rotMatrix
+		m = matrix.dot(matrix.translate(t[0],t[1],t[2]), m).tolist()
+
 
 		flower = union()(
 						 translate([0, 0.5, 0])(sphere(r)),
@@ -557,8 +560,7 @@ class turtle(object):
 						 )
 		
 		self.nodes.append(
-			(translate(self.position()))
-				(rotate(a = ang, v = axis)
+				(multmatrix(m)
 					(color(c)
 						(flower)
 					)

@@ -24,7 +24,8 @@
  - Ang - rotation angle in degrees <br>
  - Depth - recursion depth to generate the L-System rules <br>
  - Base Phrase - base sentence to initialize the L-System rules <br>
- - Prod. Rules - Production rules - Ex: A, FF^A <br>
+ - Prod. Rules - Production rules separated by a comma- Ex: A, FF^A, B, F&&FB <br>
+Which will generate the following rules: <A:FF^A, B:F&&B>
 
  @see http://www.openscad.org/<br>
  @see https://github.com/SolidCode/SolidPython

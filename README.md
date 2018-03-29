@@ -17,7 +17,7 @@
 
  To use the pregenerated rules, you simply have to run: <br>
  - python interface.py <br>
- - python should be able to open the generated file automatically, but in case there are some problems type: <br>
+   python should be able to open the generated file automatically, but in case there are some problems type: <br>
  - openscad lSystemModel[n].scad <br>
 
  If you are trying to create your own rules with the interface: <br>

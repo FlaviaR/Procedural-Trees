@@ -43,6 +43,10 @@ class Example(QWidget):
 		stochastic = QCheckBox('Stochastic L-Systems', self)
 		stochastic.stateChanged.connect(self.setStochastic)
 		
+		multiple = QCheckBox('Display Multiple', self)
+		multiple.stateChanged.connect(self.setMultiple)
+
+		
 		orientation = QComboBox(self)
 		for axis in self.axisList:
 			orientation.addItem(axis)
@@ -63,6 +67,7 @@ class Example(QWidget):
 		rec.stateChanged.connect(self.setRec)
 
 		own_Rules = QLabel('--------Make Your Own Rules--------')
+		parLabels = QLabel('<Ang, Depth, Base Phrase, Prod. Rules>')
 		self.ownAngle = QLineEdit()
 		self.ownNum = QLineEdit()
 		self.ownSentence = QLineEdit()
@@ -75,7 +80,7 @@ class Example(QWidget):
 		grid = QGridLayout()
 		grid.setSpacing(10)
 		
-		interfaceComponents = [rulesTitle, rules, pre_Rules, combo, options, stochastic, orientation, spheres, base, diameter, debug, rec, own_Rules, self.ownAngle, self.ownNum, self.ownSentence, self.ownRules, closeLabel, build]
+		interfaceComponents = [rulesTitle, rules, pre_Rules, combo, options, stochastic, multiple, orientation, spheres, base, diameter, debug, rec, own_Rules, parLabels, self.ownAngle, self.ownNum, self.ownSentence, self.ownRules, closeLabel, build]
 
 		i = 0
 		for component in interfaceComponents:
@@ -143,6 +148,10 @@ class Example(QWidget):
 	def setStochastic(self, state):
 		self.treeBuilder.useStochastic(state)
 	
+	def setMultiple(self, state):
+		print ("interface mult")
+		self.treeBuilder.displayMultiple(state)
+
 	## Sets treeBuilder to add spheres in between cylinders according to the 'state' param.
 	def setSpheres(self, state):
 		self.treeBuilder.useSpheres(state)

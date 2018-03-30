@@ -30,17 +30,19 @@ Note: The GUI has to be run with python3:<br>
 
 <hr>
 Information regarding the GUI: <br>
- - Pre-made Rules - a number of pre-written rules that can be selected to generate models <br>
+ - Pre-made Rules - a number of pre-written rules that can be selected to generate models <br><br>
+
  - Options - <br>
  - Stochastic L-Systems - select this option to generate non-deterministic trees <br>
  - Display multiple - display three models side by side <br>
  - Orientation - select which axis the model should be drawn along <br>
- - Add spheres - select this to add spheres in between the cylinder connections. (Use this if generating a model to be printed)
+ - Add spheres - select this to add spheres in between the cylinder connections. (Use this if generating a model to be printed) <br>
  - Add base to model - select this to add a base to the tree model <br>
  - Base Diameter - select a diameter for the base <br>
- - No L-System - Recursive Tree - select this to generate a recursive tree that does not use L-Systems <br>
- - Make your own rules:
-</t> - Ang - rotation angle in degrees <br>
+ - No L-System - Recursive Tree - select this to generate a recursive tree that does not use L-Systems <br><br>
+
+ * Make your own rules:
+ - Ang - rotation angle in degrees <br>
  - Depth - recursion depth to generate the L-System rules <br>
  - Base Phrase - base sentence to initialize the L-System rules <br>
  - Prod. Rules - Production rules separated by a comma- Ex: A, FF^A, B, F&&FB <br>

@@ -1,3 +1,26 @@
+#! /usr/bin/env python
+# -*- coding: UTF-8 -*-
+#
+## @package Tree
+#
+## The tree is represented completely by cylinders
+# <pre>
+#           add Stem and Leaf,                                                      if n <= 0
+#         /
+# Tree (n)
+#         \ translate([0, 0, (position of branch in relation to its parent)])       if n > 0
+#           (scale(scaleFactor)(rotate(a = [xRot, 0, (angle of rot - around parent's circumference)])
+#           (genTree(numIter - 1, scaleFactor, xRot))))
+#
+#           ~xRot and scaleFactor are randomely selected values~
+#
+# </pre>
+# Adapted from:
+# @see https://github.com/yosinski/OpenSCAD-playground/blob/master/tree.py
+#
+# @author Flavia Cavalcanti
+# @since 22/02/2018
+#
 import numpy as np
 import math as math
 
@@ -6,25 +29,10 @@ from solid import *
 from solid.utils import *
 
 class RecTree():
-	
-	## The tree is represented completely by cylinders
-	# <pre>
-	#           add Stem and Leaf,                                                      if n <= 0
-	#         /
-	# Tree (n)
-	#         \ translate([0, 0, (position of branch in relation to its parent)])       if n > 0
-	#           (scale(scaleFactor)(rotate(a = [xRot, 0, (angle of rot - around parent's circumference)])
-	#           (genTree(numIter - 1, scaleFactor, xRot))))
-	#
-	#           ~xRot and scaleFactor are randomely selected values~
-	#
-	# </pre>
-	# @see https://github.com/yosinski/OpenSCAD-playground/blob/master/tree.py
 
+	## A Normal random variable generator that takes a range, like
+	# random.uniform, instead of mean and standard deviation.
 	def rn(self, aa, bb):
-		'''A Normal random variable generator that takes a range, like
-			random.uniform, instead of mean and standard deviation.'''
-
 		return np.random.normal((bb+aa)/2., (bb-aa)/4.)
 
 	ru = np.random.uniform

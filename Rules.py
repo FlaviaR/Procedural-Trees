@@ -18,7 +18,6 @@ import lSystemObj
 
 class Rules():
 	
-	## Segmentation fault if n > 2 in OpenSCAD
 	def kochCurve1(self):
 		a = 90
 		s = "F-F-F-F"
@@ -27,7 +26,6 @@ class Rules():
 		rs = {'F':["F+FF-FF-F-F+F+FF-F-F+F+FF+FF-F", "F+FF-FF-F-F+F+F", "F-F-F+F+FF+FF-F"]}
 		return lSystemObj.LSysObj(a, s, i, r, rs)
 
-	## Will slightly traumatize OpenSCAD
 	def kochCurve2(self):
 		a = 90
 		s = "F-F-F-F"
@@ -36,7 +34,6 @@ class Rules():
 		rs = {'F':["FF-F-F-F-F-F+F", "FF-F-F-F", "F-F-F+F"]}
 		return lSystemObj.LSysObj(a, s, i, r, rs)
 
-	# #Ditto
 	def kochCurve3(self):
 		a = 90
 		s = "F-F-F-F"
@@ -45,6 +42,7 @@ class Rules():
 		rs = {'F':["FF-F-F-F-FF", "FF-F-F", "F-F-FF"]}
 		return lSystemObj.LSysObj(a, s, i, r, rs)
 
+	## This one is pretty broken
 	def hilbert3D(self):
 		a = 90
 		s = "X"

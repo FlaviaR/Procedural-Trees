@@ -37,7 +37,7 @@ One possible entry would be: <br>
 35<br>
 5<br>
 FFFA<br>
-A,>”[&FFFA]////[&FFFA]////[&FFFA]<br>
+A, >”[&FFFA]////[&FFFA]////[&FFFA]<br>
 
 
 <hr>

@@ -27,7 +27,7 @@ class Example(QWidget):
 		self.func = self.treeBuilder.rules.kochCurve1()
 		self.initUI()
 		
-		
+	## Initialize the components found in the GUI.
 	def initUI(self):
 		rulesTitle = QLabel('----------L-System Rules-----------')
 		rules = QLabel("F - Move forward a step of length d\n+ - Turn left by angle a\n- - Turn right by angle a\n& - Pitch down by angle a\n^ - Pitch up by angle a\n\ - Roll left by angle a\n/ - Roll right by angle a\n| - Turn arund (180 deg)\n[ - Push current drawing to stack\n] - Pop current drawing from stack")
@@ -93,6 +93,7 @@ class Example(QWidget):
 		self.setWindowTitle('Tree Builder')
 		self.show()
 
+	## Initialize the rule function to be the rule associated with the given dictionary key.
 	def onActivated(self, text):
 		self.func = self.ruleDict[text]
 
@@ -100,6 +101,7 @@ class Example(QWidget):
 		if ("Orientation" not in axis):
 			self.treeBuilder.axis = axis
 
+	# Modify the base diameter to match up with the given parameter. 
 	def onActivatedDiameter(self, d):
 		if (d.isdigit()):
 			self.treeBuilder.diameter = float(d)
@@ -136,20 +138,21 @@ class Example(QWidget):
 		
 		if self.buildRec:
 			self.treeBuilder.draw(rec = True)
-			subprocess.call(["open", "lSystemModel" + str(self.treeBuilder.filepathCounter)+ ".scad"])
+			subprocess.call(["openscad", "lSystemModel" + str(self.treeBuilder.filepathCounter)+ ".scad"])
 			return
 		
 		if self.buildOwnTree() is not None:
 			rules = self.buildOwnTree()
 
 		self.treeBuilder.draw(rule = rules)
-		subprocess.call(["open", "lSystemModel" + str(self.treeBuilder.filepathCounter)+ ".scad"])
+		subprocess.call(["openscad", "lSystemModel" + str(self.treeBuilder.filepathCounter)+ ".scad"])
 
+	## Determine whether to use stochastic rules to generate the models.
 	def setStochastic(self, state):
 		self.treeBuilder.useStochastic(state)
 	
+	## Determine whether to draw three models side by side instead of a single one.
 	def setMultiple(self, state):
-		print ("interface mult")
 		self.treeBuilder.displayMultiple(state)
 
 	## Sets treeBuilder to add spheres in between cylinders according to the 'state' param.

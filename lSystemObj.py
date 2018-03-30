@@ -10,6 +10,8 @@
 # @since 22/02/2018
 #
 
+## Stores the information required to generate the L-System rules including
+# the angle, the base sentence, the recursion depth, the model color, and a dictionary containing stochastic and non-stochastic rules.
 class LSysObj:
 
 	angle = 0.0

@@ -30,7 +30,8 @@ Note: The GUI has to be run with python3:<br>
 
 <hr>
 Information regarding the GUI: <br>
- * Pre-made Rules - a number of pre-written rules that can be selected to generate models <br><br>
+
+ * Pre-made Rules - a number of pre-written rules that can be selected to generate models <br>
 
  * Options - <br>
 	* Stochastic L-Systems - select this option to generate non-deterministic trees <br>

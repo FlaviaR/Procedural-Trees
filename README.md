@@ -60,8 +60,8 @@ OpenSCAD is a computationally heavy software used to extract models for 3D print
 As such, even though the preview of the models are quick to open, actually rendering them to extract their STL file is time consuming.<br>
 For example, when using the "skeletal tree" rule in the interface, the following times are generated:<br>
  * Open preview: <br>
-	* ~20s on a linux machine with intel CORE i7 <br>
-	* ~5s on a mac book air with intel CORE i7 <br>
+	* ~20s on a linux machine with intel CORE i7 with 8GB<br>
+	* ~5s on a mac book air with intel CORE i7 with 8GB<br>
  * Rendering the file: <br>
 	* 9 hours and 27 minutes on the mac <br>
 	* 5 hours and 9 minutes on a windows machine with NVIDIA GEFORCE 1080 and 16GB of RAM <br><br>

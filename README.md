@@ -18,9 +18,9 @@
  Note: The GUI has to be run with python3:<br>
  - <A HREF="https://www.python.org/downloads/">Download Python</A><br>
 
- To use the pregenerated rules, you simply have to run: <br>
+ To use the pregenerated rules, simply run: <br>
  - python3 interface.py <br>
-   python3 should be able to open the generated file automatically, but in case there are some problems type: <br>
+   -> python3 should be able to open the generated file automatically, but in case the file can not be oppened, type: <br>
  - openscad lSystemModel[n].scad, where [n] is the number of the file you want to open. E.g. openscad lSystemModel5.scad<br>
 
  If you are trying to create your own rules with the interface, read ahead for more information regarding parameters: <br>

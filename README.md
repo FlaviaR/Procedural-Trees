@@ -18,7 +18,8 @@ Note: The GUI has to be run with python3:<br>
 
  To run the example models found in the turtle class:<br>
  - python turtle.py \<example_number\><br>
- - openscad turtle.scad & <br><br>
+ - \<example_number\> can be any number from 0 to 11
+ - openscad turtle.scad 5 & <br><br>
 
  To use the pregenerated rules in the GUI, simply run: <br>
  - python3 interface.py <br>

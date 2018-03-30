@@ -32,7 +32,13 @@ Note: The GUI has to be run with python3:<br>
  - Depth - recursion depth to generate the L-System rules <br>
  - Base Phrase - base sentence to initialize the L-System rules <br>
  - Prod. Rules - Production rules separated by a comma- Ex: A, FF^A, B, F&&FB <br>
-Which will generate the following rules: <A:FF^A, B:F&&B>
+Which will generate the following rules: <A:FF^A, B:F&&B> <br><br>
+One possible entry would be: <br>
+35<br>
+5<br>
+FFFA<br>
+A,>”[&FFFA]////[&FFFA]////[&FFFA]<br>
+
 
 <hr>
 

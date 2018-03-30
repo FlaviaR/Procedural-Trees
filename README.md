@@ -16,7 +16,7 @@
  - openscad turtle.scad & <br><br>
 
  Note: The GUI has to be run with python3:<br>
- - <A HREF="https://www.python.org/downloads/"><br>
+ - <A HREF="https://www.python.org/downloads/">Download Python</A><br>
 
  To use the pregenerated rules, you simply have to run: <br>
  - python3 interface.py <br>

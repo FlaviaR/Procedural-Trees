@@ -30,22 +30,22 @@ Note: The GUI has to be run with python3:<br>
 
 <hr>
 Information regarding the GUI: <br>
- - Pre-made Rules - a number of pre-written rules that can be selected to generate models <br><br>
+ * Pre-made Rules - a number of pre-written rules that can be selected to generate models <br><br>
 
- - Options - <br>
- - Stochastic L-Systems - select this option to generate non-deterministic trees <br>
- - Display multiple - display three models side by side <br>
- - Orientation - select which axis the model should be drawn along <br>
- - Add spheres - select this to add spheres in between the cylinder connections. (Use this if generating a model to be printed) <br>
- - Add base to model - select this to add a base to the tree model <br>
- - Base Diameter - select a diameter for the base <br>
- - No L-System - Recursive Tree - select this to generate a recursive tree that does not use L-Systems <br><br>
+ * Options - <br>
+	* Stochastic L-Systems - select this option to generate non-deterministic trees <br>
+	* Display multiple - display three models side by side <br>
+	* Orientation - select which axis the model should be drawn along <br>
+	* Add spheres - select this to add spheres in between the cylinder connections. (Use this if generating a model to be printed) <br>
+	* Add base to model - select this to add a base to the tree model <br>
+	* Base Diameter - select a diameter for the base <br>
+	* No L-System - Recursive Tree - select this to generate a recursive tree that does not use L-Systems <br><br>
 
  * Make your own rules:
 	* Ang - rotation angle in degrees <br>
- - Depth - recursion depth to generate the L-System rules <br>
- - Base Phrase - base sentence to initialize the L-System rules <br>
- - Prod. Rules - Production rules separated by a comma- Ex: A, FF^A, B, F&&FB <br>
+	* Depth - recursion depth to generate the L-System rules <br>
+	* Base Phrase - base sentence to initialize the L-System rules <br>
+	* Prod. Rules - Production rules separated by a comma- Ex: A, FF^A, B, F&&FB <br>
 Which will generate the following rules: <A:FF^A, B:F&&B> <br><br>
 One possible entry would be: <br>
 35<br>
@@ -59,12 +59,12 @@ A, >”[&FFFA]////[&FFFA]////[&FFFA]<br>
 OpenSCAD is a computationally heavy software used to extract models for 3D printing. <br>
 As such, even though the preview of the models are quick to open, actually rendering them to extract their STL file is time consuming.<br>
 For example, when using the "skeletal tree" rule in the interface, the following times are generated:<br>
- - Open preview: <br>
- - ~20s on a linux machine with intel CORE i7 <br>
- - ~5s on a mac book air with intel CORE i7 <br>
- - Rendering the file: <br>
- - 9 hours and 27 minutes on the mac <br>
- - 5 hours and 9 minutes on a windows machine with NVIDIA GEFORCE 1080 and 16GB of RAM <br><br>
+ * Open preview: <br>
+	* ~20s on a linux machine with intel CORE i7 <br>
+	* ~5s on a mac book air with intel CORE i7 <br>
+ * Rendering the file: <br>
+	* 9 hours and 27 minutes on the mac <br>
+	* 5 hours and 9 minutes on a windows machine with NVIDIA GEFORCE 1080 and 16GB of RAM <br><br>
 
  @see http://www.openscad.org/<br>
  @see https://github.com/SolidCode/SolidPython

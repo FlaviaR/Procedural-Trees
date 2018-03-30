@@ -42,7 +42,7 @@ Information regarding the GUI: <br>
  - No L-System - Recursive Tree - select this to generate a recursive tree that does not use L-Systems <br><br>
 
  * Make your own rules:
- - Ang - rotation angle in degrees <br>
+	* Ang - rotation angle in degrees <br>
  - Depth - recursion depth to generate the L-System rules <br>
  - Base Phrase - base sentence to initialize the L-System rules <br>
  - Prod. Rules - Production rules separated by a comma- Ex: A, FF^A, B, F&&FB <br>
